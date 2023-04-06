@@ -1,0 +1,43 @@
+name: sahabatmt
+version: 1.0.0+1
+publish_to: none
+description: Sahabat Multi Teknik.
+environment: 
+  sdk: '>=2.18.6 <3.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.2
+  get_cli: ^1.8.1
+  get: 4.6.5
+  google_fonts: ^4.0.3
+  delayed_display: 2.0.0
+  dots_indicator: 2.1.0
+  carousel_slider: 4.1.1
+  flutter_svg: 1.1.6
+  image_picker: 0.8.6
+  path_provider: ^2.0.3
+
+
+
+  flutter: 
+    sdk: flutter
+
+dev_dependencies: 
+  flutter_lints: ^2.0.0
+  flutter_test: 
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/images/
+    - assets/icons/
+  fonts:
+    - family : Sans
+      fonts :
+        - asset: assets/fonts/SourceSansPro-Black.ttf
+        - asset: assets/fonts/SourceSansPro-BlackItalic.ttf
+        - asset: assets/fonts/SourceSansPro-Bold.ttf
+        - asset: assets/fonts/SourceSansPro-Regular.ttf
+        - asset: assets/fonts/SourceSansPro-SemiBold.ttf
+  uses-material-design: true
+

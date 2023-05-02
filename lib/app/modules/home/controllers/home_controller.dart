@@ -1,6 +1,9 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:get/get.dart';
 
+import '../../../services/produk_services.dart';
+import 'package:sahabatmt/app/data/models/produk.dart';
+
 class HomeController extends GetxController {
   //TODO: Implement HomeController
   final currentIndex = 0.obs;
@@ -8,9 +11,18 @@ class HomeController extends GetxController {
 
   CarouselController buttonCarouselController = CarouselController();
 
+  final ProdukServices _services = ProdukServices();
+  var produkList = <Produk>[].obs;
+  var jasaList = <Produk>[].obs;
+
+  var isLoading = true.obs;
+  var isLoading2 = true.obs;
+
   void changePage(int currentIndex) {
     this.currentIndex.value = currentIndex;
   }
+
+  // List<Produk> myData = [];
 
   List<Map<String, dynamic>> corousel = [
     {
@@ -35,12 +47,42 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
+    fetchData();
+    fetchData2();
     super.onInit();
   }
 
   @override
-  void onReady() {
+  void onReady() async {
     super.onReady();
+  }
+
+  void fetchData() async {
+    try {
+      isLoading(true);
+      var data = await _services.fetchData();
+      produkList.value = data;
+      // print(produkList[0].gambar);
+
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void fetchData2() async {
+    try {
+      isLoading2(true);
+      var data = await _services.fetchData2();
+      jasaList.value = data;
+      // print(produkList[0].gambar);
+      // print('HAHAHAHAHA');
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      isLoading2(false);
+    }
   }
 
   @override

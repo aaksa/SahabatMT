@@ -10,8 +10,6 @@ import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../modules/itemdetailsscreen/bindings/itemdetailsscreen_binding.dart';
-import '../modules/itemdetailsscreen/views/itemdetailsscreen_view.dart';
 import '../modules/jasa/bindings/jasa_binding.dart';
 import '../modules/jasa/views/jasa_view.dart';
 import '../modules/latestlayanan/bindings/latestlayanan_binding.dart';
@@ -26,6 +24,8 @@ import '../modules/notification/bindings/notification_binding.dart';
 import '../modules/notification/views/notification_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
+import '../modules/payment/bindings/payment_binding.dart';
+import '../modules/payment/views/payment_view.dart';
 import '../modules/productdetail/bindings/productdetail_binding.dart';
 import '../modules/productdetail/views/productdetail_view.dart';
 import '../modules/signup/bindings/signup_binding.dart';
@@ -43,7 +43,7 @@ class AppPages {
   AppPages._();
 
   static const INITIAL = Routes.SPLASH;
-
+  static const HOMES = Routes.HOME;
   static final routes = [
     GetPage(
       name: _Paths.HOME,
@@ -121,11 +121,6 @@ class AppPages {
       binding: CartBinding(),
     ),
     GetPage(
-      name: _Paths.ITEMDETAILSSCREEN,
-      page: () => ItemDetailsScreen(),
-      binding: ItemdetailsscreenBinding(),
-    ),
-    GetPage(
       name: _Paths.NOTIFICATION,
       page: () => NotificationView(),
       binding: NotificationBinding(),
@@ -134,6 +129,11 @@ class AppPages {
       name: _Paths.ARTICLE,
       page: () => ArticleView(),
       binding: ArticleBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAYMENT,
+      page: () => PaymentView(),
+      binding: PaymentBinding(),
     ),
   ];
 }

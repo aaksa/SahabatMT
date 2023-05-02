@@ -13,9 +13,11 @@ import '../../widgets/card-small.dart';
 import '../../widgets/searchbar.dart';
 import '../components/card_caraousel.dart';
 import '../controllers/home_controller.dart';
+import 'package:sahabatmt/app/data/models/produk.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,34 +64,27 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    height: 200,
-                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 21),
-                    child: Row(
-                      children: [
-                        CardSmall(
-                          title: "Garuda Air Conditioner with latest tech",
-                          img: "https://via.placeholder.com/550",
-                        ),
-                        CardSmall(
-                          title: "Samsing Air Contidioner with latest tech",
-                          img: "https://via.placeholder.com/550",
-                        ),
-                        CardSmall(
-                            title: "Indosiar Naga biru menembus langit biru",
-                            img: "https://via.placeholder.com/550"),
-                        CardSmall(
-                          title: "Samsing Air Contidioner with latest tech",
-                          img: "https://via.placeholder.com/550",
-                        ),
-                        CardSmall(
-                            title: "Indosiar Naga biru menembus langit biru",
-                            img: "https://via.placeholder.com/550"),
-                      ],
-                    ),
-                  ),
+                Container(
+                  height: getProperHeight(200),
+                  padding: EdgeInsets.symmetric(vertical: 3, horizontal: 21),
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.produkList.length,
+                        itemBuilder: (context, index) {
+                          Produk produk = controller.produkList[index];
+                          return CardSmall(
+                            title: produk.nama!,
+                            img: produk.gambar!,
+                            produk: produk,
+                          );
+                        },
+                      );
+                    }
+                  }),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
@@ -117,35 +112,27 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    height: 200,
-                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 21),
-                    child: Row(
-                      children: [
-                        CardSmall(
-                          title: "Garuda Air Conditioner with latest tech",
-                          img: "https://via.placeholder.com/550",
-                        ),
-                        CardSmall(
-                          title: "Samsing Air Contidioner with latest tech",
-                          img: "https://via.placeholder.com/550",
-                        ),
-                        CardSmall(
-                            title: "Indosiar Naga biru menembus langit biru",
-                            img: "https://via.placeholder.com/550"),
-                        CardSmall(
-                          title: "Garuda Air Conditioner with latest tech",
-                          img: "https://via.placeholder.com/550",
-                        ),
-                        CardSmall(
-                          title: "Garuda Air Conditioner with latest tech",
-                          img: "https://via.placeholder.com/550",
-                        ),
-                      ],
-                    ),
-                  ),
+                Container(
+                  height: getProperHeight(200),
+                  padding: EdgeInsets.symmetric(vertical: 3, horizontal: 21),
+                  child: Obx(() {
+                    if (controller.isLoading2.value) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.jasaList.length,
+                        itemBuilder: (context, index) {
+                          Produk produk = controller.jasaList[index];
+                          return CardSmall(
+                            produk: produk,
+                            title: produk.nama!,
+                            img: produk.gambar!,
+                          );
+                        },
+                      );
+                    }
+                  }),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
@@ -175,6 +162,10 @@ class HomeView extends GetView<HomeController> {
                     child: Column(
                       children: [
                         CardHorizontal(
+                          title: 'Pentingnya Membersihkan Air Conditioner',
+                          cta: 'Lihat Artikel',
+                          img:
+                              'https://coolbestaircon.com/wp-content/uploads/2020/11/The-Beginners-Guide-To-Aircon-Installation.png',
                           tap: () {
                             Get.toNamed(Routes.ARTICLE);
                           },

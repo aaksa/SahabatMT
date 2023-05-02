@@ -30,8 +30,7 @@ class AccountView extends GetView<AccountController> {
               Center(
                 child: CircleAvatar(
                   radius: 50.0,
-                  backgroundImage: NetworkImage(
-                      'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'),
+                  backgroundImage: AssetImage('assets/icons/account.png'),
                 ),
               ),
               SizedBox(height: 16.0),
@@ -109,6 +108,7 @@ class AccountView extends GetView<AccountController> {
               TextButton(
                 onPressed: () {
                   // Logout user
+                  _profileController.logout();
                 },
                 child: Text(
                   'LOG OUT',

@@ -12,7 +12,7 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
   Widget build(BuildContext context) {
     BottomNavBarController controller = Get.put(BottomNavBarController());
     return Obx(
-          () => BottomNavigationBar(
+      () => BottomNavigationBar(
         backgroundColor: kBackgroundColor1,
         type: BottomNavigationBarType.fixed,
         currentIndex: controller.currentIndex.value,
@@ -37,8 +37,12 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
             label: 'Market',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.upload_file_rounded,size : 36,color: kPrimaryColor,),
-            label:'',
+            icon: Icon(
+              Icons.upload_file_rounded,
+              size: 36,
+              color: kPrimaryColor,
+            ),
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -47,7 +51,7 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
                   ? kPrimaryColor
                   : Color(0xFF808191),
             ),
-            label: 'Wishlist',
+            label: 'Request',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -60,5 +64,6 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
           ),
         ],
       ),
-    );  }
+    );
+  }
 }

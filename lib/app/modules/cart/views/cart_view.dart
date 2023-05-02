@@ -5,6 +5,7 @@ import 'package:sahabatmt/app/constants/constants.dart';
 import 'package:sahabatmt/app/modules/widgets/appbarviews.dart';
 
 import '../../widgets/card-shopping.dart';
+import '../components/address_dialog.dart';
 import '../controllers/cart_controller.dart';
 
 import 'package:flutter/material.dart';
@@ -34,8 +35,8 @@ class CartView extends GetView<CartController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                          "Cart subtotal (${cartController.shoppingCards.length} items): "),
-                      Text("Rp.${cartController.basketValue}",
+                          "Cart subtotal (${cartController.itemCount} items): "),
+                      Text("Rp.${cartController.totalPrice}",
                           style: TextStyle(fontWeight: FontWeight.bold))
                     ],
                   )),
@@ -46,7 +47,10 @@ class CartView extends GetView<CartController> {
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(kPrimaryLightColor)),
-                  onPressed: () {},
+                  onPressed: () {
+                    print(controller.orderan.toJson());
+                    Get.dialog(AddressDialog());
+                  },
                   child: Text("PROCEED TO CHECKOUT"),
                 ),
               ),
@@ -54,19 +58,31 @@ class CartView extends GetView<CartController> {
               Divider(),
               Column(
                 children: [
-                  for (var i = 0; i < cartController.shoppingCards.length; i++)
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: CardShopping(
-                        body: cartController.shoppingCards[i]["body"],
-                        stock: cartController.shoppingCards[i]["stock"],
-                        price: cartController.shoppingCards[i]["price"],
-                        img: cartController.shoppingCards[i]["img"],
-                        deleteOnPress: () {
-                          cartController.removeCard(i);
-                        },
-                      ),
-                    )
+                  Obx(() {
+                    if (cartController.product.nama == '' ||
+                        cartController.product.nama == null ||
+                        cartController.product.nama == 'none' ||
+                        cartController.product.nama == ' ') {
+                      return Center();
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: CardShopping(
+                          body: cartController.products.nama ?? '',
+                          stock: true,
+                          price: cartController.products.harga.toString(),
+                          img: cartController.products.gambar,
+                          deleteOnPress: () {
+                            cartController.removeFromCart();
+                          },
+                          kuantitas: cartController.products.kuantitas ?? 1,
+                          update: (value) {
+                            cartController.updatepesanan(value);
+                          },
+                        ),
+                      );
+                    }
+                  }),
                 ],
               ),
             ],

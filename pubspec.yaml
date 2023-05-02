@@ -16,6 +16,12 @@ dependencies:
   flutter_svg: 1.1.6
   image_picker: 0.8.6
   path_provider: ^2.0.3
+  http: ^0.13.4
+  get_storage: ^2.1.1
+  quantity_input: ^1.0.2
+  midtrans_sdk: ^0.3.4
+  flutter_dotenv: ^5.0.2
+  webview_flutter: ^4.2.0
 
 
 

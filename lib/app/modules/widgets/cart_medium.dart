@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:sahabatmt/app/constants/constants.dart';
 
 import '../../configs/configs.dart';
+import 'package:sahabatmt/app/data/models/produk.dart';
 import '../../routes/app_pages.dart';
 
 class CardMedium extends StatelessWidget {
@@ -12,13 +13,15 @@ class CardMedium extends StatelessWidget {
       this.cta = kSubtitleTextColor,
       this.img = "https://via.placeholder.com/200",
       this.tap,
-      this.price = "00"});
+      this.price = "00",
+      required this.produk});
 
   final Color? cta;
   final String img;
   final String price;
   final Function()? tap;
   final String title;
+  final Produk produk;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class CardMedium extends StatelessWidget {
         margin: EdgeInsets.only(top: 10),
         child: GestureDetector(
             onTap: () {
-              Get.toNamed(Routes.PRODUCTDETAIL);
+              Get.toNamed(Routes.PRODUCTDETAIL, arguments: produk);
             },
             child: Stack(clipBehavior: Clip.hardEdge, children: [
               Card(
@@ -49,8 +52,7 @@ class CardMedium extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                    "title asfasfds sfsafds  sdfasdfdsf  sfdasfs",
+                                Text(title,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     textAlign: TextAlign.start,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../../services/auth_services.dart';
 
 class LoginController extends GetxController {
   //TODO: Implement LoginController
@@ -9,13 +10,15 @@ class LoginController extends GetxController {
   String? email;
   String? password;
   String? notif;
+
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  late TextEditingController emailController,
+      passwordController,
+      usernameController;
+  final AuthService _authService = AuthService();
 
-
-  late TextEditingController emailController, passwordController, usernameController;
   var obscureText = true.obs;
   bool isError = false;
-
 
   final count = 0.obs;
   @override
@@ -24,6 +27,18 @@ class LoginController extends GetxController {
     emailController = TextEditingController();
     passwordController = TextEditingController();
     usernameController = TextEditingController();
+  }
+
+  Future<void> login() async {
+    try {
+      var email = emailController.text;
+      var password = passwordController.text;
+      await _authService.login(email, password);
+      Get.offAllNamed('/home');
+    } catch (e) {
+      print(e.toString());
+      Get.snackbar('Error', 'Failed to login');
+    }
   }
 
   @override
@@ -46,9 +61,8 @@ class LoginController extends GetxController {
   }
 
   String? validateEmail(String value) {
-
     if (value.isEmpty) {
-    return 'Please enter your email';
+      return 'Please enter your email';
     }
     if (!GetUtils.isEmail(value)) {
       return "Provide valid Email";
@@ -57,7 +71,7 @@ class LoginController extends GetxController {
   }
 
   String? validateUser(String value) {
-    if(value.isEmpty) {
+    if (value.isEmpty) {
       return 'Please enter your username';
     }
   }
@@ -73,7 +87,6 @@ class LoginController extends GetxController {
   // },
 
   String? validatePassword(String value) {
-
     if (value.isEmpty) {
       return 'Please enter your password';
     }
@@ -88,11 +101,7 @@ class LoginController extends GetxController {
     isError = false;
     final isValid = loginFormKey.currentState!.validate();
     loginFormKey.currentState!.save();
-    if(!isValid){
-      return;
-    } else {
-      Get.offAllNamed(Routes.HOME);
-    }
+    login();
   }
 
   void increment() => count.value++;

@@ -5,7 +5,10 @@ import 'package:sahabatmt/app/constants/constants.dart';
 import 'package:sahabatmt/app/modules/widgets/appbarviews.dart';
 import 'package:sahabatmt/app/modules/widgets/card-horizontal.dart';
 
+import 'package:sahabatmt/app/data/models/Rekuest.dart';
+
 import '../../bottom_nav_bar/views/bottom_nav_bar_view.dart';
+import '../../widgets/card-horizontal-2.dart';
 import '../controllers/wishlist_controller.dart';
 
 class WishlistView extends GetView<WishlistController> {
@@ -17,19 +20,20 @@ class WishlistView extends GetView<WishlistController> {
         backgroundColor: kBackgroundColor1,
         iconTheme: IconThemeData(color: kPrimaryTextColor),
         title: appbarviews(
-          title: "Wishlist",
+          title: "Request Status",
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Column(
-            children: [
-              CardHorizontal(),
-              CardHorizontal(),
-              CardHorizontal(),
-            ],
+      body: Obx(
+        () => SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Column(
+              children: [
+                for (var rekuest in controller.rekuestList)
+                  CardHorizontal2(rekuest: rekuest),
+              ],
+            ),
           ),
         ),
       ),

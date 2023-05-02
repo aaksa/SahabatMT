@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../configs/configs.dart';
 import '../modules/widgets/appbarviews.dart';
 // import 'package:google_fonts/google_fonts.dart';
+
+//url endpoint
+//for api
+const String baseUrl = 'http://192.168.1.22:8000/api';
+
+//for storage
+const String baseUrl2 = 'http://192.168.1.22:8000';
+
+const String baseUrl3 = 'http://192.168.1.22:8000/api/pay';
 
 // For App Color
 const Color kPrimaryColor = Color(0xFFE8505B);

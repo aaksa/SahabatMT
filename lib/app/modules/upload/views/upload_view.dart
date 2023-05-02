@@ -13,8 +13,6 @@ import 'package:sahabatmt/app/constants/constants.dart';
 import 'package:sahabatmt/app/modules/upload/controllers/upload_controller.dart';
 import 'package:sahabatmt/app/modules/widgets/appbarviews.dart';
 
-import '../../itemdetailsscreen/views/itemdetailsscreen_view.dart';
-
 class UploadView extends GetView<UploadController> {
   @override
   Widget build(BuildContext context) {
@@ -30,14 +28,13 @@ class UploadView extends GetView<UploadController> {
           child: Column(
             children: [
               Container(
-                width: getProperWidht(300),
-                height: getProperHeight(300),
-                child: Obx(() => controller.image.value != null
-                    ? Image.file(controller.image.value ?? File(''))
-                    : Container(
-                        child: Image.network(defaultimg),
-                      )),
-              ),
+                  width: getProperWidht(300),
+                  height: getProperHeight(300),
+                  child: Obx(() => controller.image.value != null
+                      ? Image.file(controller.image.value!)
+                      : Container(
+                          child: Image.asset('assets/icons/pics.png'),
+                        ))),
               ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor:
@@ -61,7 +58,7 @@ class UploadView extends GetView<UploadController> {
                   }
                   return null;
                 },
-                onChanged: (value) => controller.itemName.value = value,
+                onChanged: (value) => controller.nama.value = value,
               ),
               Row(
                 children: [
@@ -81,24 +78,28 @@ class UploadView extends GetView<UploadController> {
                         return null;
                       },
                       onChanged: (value) =>
-                          controller.quantity.value = int.tryParse(value) ?? 0,
+                          controller.kuantitas.value = int.tryParse(value) ?? 0,
                     ),
                   ),
                   SizedBox(
                     width: 16,
                   ),
                   Expanded(
-                    child: DropdownButtonFormField<Kondisi>(
-                      value: controller.condition.value,
-                      onChanged: (value) => controller.changeCondition(value!),
+                    child: DropdownButtonFormField<String>(
+                      value: controller.kondisi.value,
+                      onChanged: (value) => controller.changeCondition(value),
                       items: [
                         DropdownMenuItem(
-                          value: Kondisi.baru,
+                          value: 'Baru',
                           child: Text('Baru'),
                         ),
                         DropdownMenuItem(
-                          value: Kondisi.bekas,
+                          value: 'Bekas',
                           child: Text('Bekas'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'Used',
+                          child: Text('Used'),
                         ),
                       ],
                       decoration: InputDecoration(labelText: 'Condition'),
@@ -113,14 +114,21 @@ class UploadView extends GetView<UploadController> {
                 ],
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Type'),
+                decoration: InputDecoration(
+                  labelText: 'Harga',
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                ],
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter a type';
+                    return 'Please enter price';
                   }
                   return null;
                 },
-                onChanged: (value) => controller.type.value = value,
+                onChanged: (value) =>
+                    controller.harga.value = int.tryParse(value) ?? 0,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Address'),
@@ -130,17 +138,7 @@ class UploadView extends GetView<UploadController> {
                   }
                   return null;
                 },
-                onChanged: (value) => controller.address.value = value,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'City'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a city';
-                  }
-                  return null;
-                },
-                onChanged: (value) => controller.city.value = value,
+                onChanged: (value) => controller.alamat.value = value,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Province'),
@@ -152,26 +150,20 @@ class UploadView extends GetView<UploadController> {
                 },
                 onChanged: (value) => controller.province.value = value,
               ),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Deskripsi',
+                ),
+                onChanged: (value) => controller.deskripsi.value = value,
+              ),
               Divider(
                 height: 40,
                 thickness: 2,
               ),
               ElevatedButton(
                 style: butt1,
-                onPressed: () {
-                  Get.to(
-                    ItemDetailsScreen(),
-                    arguments: {
-                      'image': controller.image.value,
-                      'itemName': controller.itemName.value,
-                      'quantity': controller.quantity.value,
-                      'address': controller.address.value,
-                      'city': controller.city.value,
-                      'province': controller.province.value,
-                      'type': controller.type.value,
-                      'condition': controller.condition.value,
-                    },
-                  );
+                onPressed: () async {
+                  controller.upload();
                 },
                 child: Text('Save'),
               ),

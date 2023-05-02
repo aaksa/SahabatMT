@@ -6,6 +6,8 @@ import 'package:sahabatmt/app/modules/bottom_nav_bar/views/bottom_nav_bar_view.d
 import 'package:sahabatmt/app/modules/widgets/card-small.dart';
 import 'package:sahabatmt/app/modules/widgets/cart_medium.dart';
 
+import 'package:sahabatmt/app/data/models/produk.dart';
+
 import '../../widgets/appbarview.dart';
 import '../../widgets/iconbutton.dart';
 import '../../widgets/searchbar.dart';
@@ -27,15 +29,12 @@ class MarketView extends GetView<MarketController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Padding(
+            //   padding: const EdgeInsets.all(20.0),
+            //   child: Searchbar(),
+            // ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Searchbar(),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: 30,
-              ),
+              padding: EdgeInsets.fromLTRB(30, 20, 30, 0),
               child: Text(
                 "Category",
                 textAlign: TextAlign.start,
@@ -48,22 +47,43 @@ class MarketView extends GetView<MarketController> {
             SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Row(
-                  children: [
-                    IconButton1(
-                      icon: Icon(Icons.dashboard_outlined),
-                      title: 'Barang',
-                    ),
-                    IconButton1(
-                      icon: Icon(Icons.local_shipping_outlined),
-                      title: 'Jasa',
-                    ),
-                    IconButton1(
-                      icon: Icon(Icons.crop_square_rounded),
-                      title: 'All',
-                    ),
-                  ],
-                ),
+                child: Obx(() => Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: controller.isButton1Active.value
+                              ? null // If button 1 is already active, disable it
+                              : () {
+                                  // Otherwise, activate button 1 and deactivate button 2
+                                  controller.fetchData();
+                                  controller.isButton1Active.value = true;
+                                  controller.isButton2Active.value = false;
+                                },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: controller.isButton1Active.value
+                                  ? kPrimaryColor
+                                  : kSecondaryColor,
+                              disabledBackgroundColor: kPrimaryLightColor),
+                          child: Text('Barang'),
+                        ),
+                        ElevatedButton(
+                          onPressed: controller.isButton2Active.value
+                              ? null // If button 2 is already active, disable it
+                              : () {
+                                  // Otherwise, activate button 2 and deactivate button 1
+                                  controller.fetchData2();
+                                  controller.isButton1Active.value = false;
+                                  controller.isButton2Active.value = true;
+                                },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: controller.isButton2Active.value
+                                ? kPrimaryColor
+                                : kSecondaryColor,
+                            disabledBackgroundColor: kPrimaryLightColor,
+                          ),
+                          child: Text('Jasa'),
+                        ),
+                      ],
+                    )),
               ),
             ),
             Padding(
@@ -84,29 +104,37 @@ class MarketView extends GetView<MarketController> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 10, // replace with your actual item count
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // number of columns in the grid
-                    crossAxisSpacing: 10, // spacing between columns
-                    mainAxisSpacing: 10, // spacing between rows
-                    childAspectRatio: 0.85, // width/height ratio of each item
+            Obx(() => Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: controller.isLoading.value
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : GridView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: controller.marketData.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 0.95,
+                            ),
+                            itemBuilder: (context, index) {
+                              Produk data = controller.marketData[index];
+                              return CardMedium(
+                                title: data.nama ?? '',
+                                img: data.gambar!,
+                                price: data.harga?.toString() ?? '',
+                                produk: data,
+                              );
+                            },
+                          ),
                   ),
-                  itemBuilder: (context, index) {
-                    // replace this container with your actual grid item widget
-                    return Container(
-                      child: CardMedium(),
-                    );
-                  },
-                ),
-              ),
-            ),
+                )),
           ],
         ),
       ),

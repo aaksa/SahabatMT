@@ -5,29 +5,32 @@ import 'package:sahabatmt/app/constants/constants.dart';
 
 import '../../configs/configs.dart';
 import '../../routes/app_pages.dart';
+import 'package:sahabatmt/app/data/models/produk.dart';
 
 class CardSmall extends StatelessWidget {
   CardSmall(
       {this.title = "Placeholder Title",
       this.cta = kSubtitleTextColor,
       this.img = "https://via.placeholder.com/200",
-      this.tap});
+      this.tap,
+      required this.produk});
 
   final Color? cta;
   final String img;
   final Function()? tap;
   final String title;
+  final Produk produk;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
+      width: getProperWidht(120),
       child: Container(
         height: getProperHeight(200),
-        margin: EdgeInsets.only(top: 10),
+        margin: EdgeInsets.only(top: 0),
         child: GestureDetector(
             onTap: () {
-              Get.toNamed(Routes.PRODUCTDETAIL);
+              Get.toNamed(Routes.PRODUCTDETAIL, arguments: produk);
             },
             child: Stack(clipBehavior: Clip.hardEdge, children: [
               Card(

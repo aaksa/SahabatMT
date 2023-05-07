@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:sahabatmt/app/modules/login/controllers/login_controller.dart';
@@ -13,12 +14,7 @@ class SignupView extends GetView<SignupController> {
   @override
   Widget build(BuildContext context) {
     SignupController controller = Get.put(SignupController());
-
-
-
     return Scaffold(
-
-
       resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
       // appBar: AppBar(
@@ -113,6 +109,23 @@ class SignupView extends GetView<SignupController> {
                                         return controller.validateEmail(value!);
                                       },
                                     ),
+                                    TextFormField(
+                                      controller: controller.nomorController,
+                                      decoration: InputDecoration(
+                                        labelText: 'Nomor Hp',
+                                      ),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      keyboardType: TextInputType.number,
+                                      onSaved: (value) {
+                                        controller.nomorHp = value;
+                                      },
+                                      validator: (value) {
+                                        return controller
+                                            .validateInformation(value!);
+                                      },
+                                    ),
                                     SizedBox(height: 5),
                                     Obx(
                                       () => TextFormField(
@@ -147,14 +160,105 @@ class SignupView extends GetView<SignupController> {
                                     SizedBox(
                                       height: getProperHeight(10),
                                     ),
-                                    GestureDetector(
-                                        child: Container(
-                                            alignment: Alignment.centerRight,
-                                            child: Text('Forgot Password ?',
-                                                textAlign: TextAlign.start,
-                                                textWidthBasis:
-                                                    TextWidthBasis.parent)),
-                                        onTap: () {}),
+                                    SizedBox(height: 5),
+                                    Obx(
+                                      () => DropdownButtonFormField<String>(
+                                        value:
+                                            controller.selectedProvince.value,
+                                        onChanged: (String? newValue) {
+                                          controller.selectedProvince.value =
+                                              newValue!;
+                                        },
+                                        items: [
+                                          DropdownMenuItem(
+                                            value: 'Sulawesi Selatan',
+                                            child: Text('Sulawesi Selatan'),
+                                          ),
+                                          DropdownMenuItem(
+                                            value: 'Sulawesi',
+                                            child: Text('Sulawesi'),
+                                          ),
+                                        ],
+                                        decoration: InputDecoration(
+                                          labelText: 'Provinsi',
+                                          contentPadding:
+                                              EdgeInsets.only(bottom: 8),
+                                          border: UnderlineInputBorder(),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Obx(
+                                      () => DropdownButtonFormField<String>(
+                                        value: controller.cities[0],
+                                        onChanged: (String? newValue) {
+                                          controller.cities.remove(newValue);
+                                          controller.cities
+                                              .insert(0, newValue!);
+                                        },
+                                        items: controller.cities
+                                            .map(
+                                              (city) => DropdownMenuItem(
+                                                value: city,
+                                                child: Text(city),
+                                              ),
+                                            )
+                                            .toList(),
+                                        decoration: InputDecoration(
+                                          labelText: 'Kota',
+                                          border: InputBorder.none,
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blue, width: 2),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      controller:
+                                          controller.kecamatanController,
+                                      decoration: InputDecoration(
+                                        labelText: 'Kecamatan',
+                                      ),
+                                      onSaved: (value) {
+                                        controller.Kecamatan = value;
+                                      },
+                                      validator: (value) {
+                                        return controller
+                                            .validateInformation(value!);
+                                      },
+                                    ),
+                                    TextFormField(
+                                      controller:
+                                          controller.kelurahanController,
+                                      decoration: InputDecoration(
+                                        labelText: 'Kelurahan',
+                                      ),
+                                      onSaved: (value) {
+                                        controller.Kelurahan = value;
+                                      },
+                                      validator: (value) {
+                                        return controller
+                                            .validateInformation(value!);
+                                      },
+                                    ),
+                                    TextFormField(
+                                      controller: controller.jalanController,
+                                      decoration: InputDecoration(
+                                        labelText: 'Jalan',
+                                      ),
+                                      onSaved: (value) {
+                                        controller.Jalan = value;
+                                      },
+                                      validator: (value) {
+                                        return controller
+                                            .validateInformation(value!);
+                                      },
+                                    ),
                                   ],
                                 ),
                               ),
@@ -168,11 +272,11 @@ class SignupView extends GetView<SignupController> {
                                 ),
                                 child: TextButton(
                                   onPressed: () {
-                                    controller.checklogin();
+                                    controller.register();
                                     // Add your onPressed action here
                                   },
                                   child: Text(
-                                    'Sign up',
+                                    'Daftar',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,

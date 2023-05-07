@@ -54,28 +54,32 @@ class AccountView extends GetView<AccountController> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8.0),
-                        Text(controller.name.toString()),
+                        Obx(() =>
+                            Text(controller.userData.value.nama.toString())),
                         SizedBox(height: 16.0),
                         Text(
                           'Email ',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8.0),
-                        Text(controller.email.toString()),
+                        Obx(() =>
+                            Text(controller.userData.value.email.toString())),
                         SizedBox(height: 16.0),
                         Text(
                           'Phone ',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8.0),
-                        Text(controller.phone.toString()),
+                        Obx(() =>
+                            Text(controller.userData.value.nomorHp.toString())),
                         SizedBox(height: 16.0),
                         Text(
                           'Address',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8.0),
-                        Text(controller.address.value),
+                        Obx(() => Text(controller.userData.value.alamatLengkap
+                            .toString())),
                       ],
                     ),
                   ),

@@ -24,15 +24,23 @@ class WishlistView extends GetView<WishlistController> {
         ),
         centerTitle: true,
       ),
-      body: Obx(
-        () => SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Column(
-              children: [
-                for (var rekuest in controller.rekuestList)
-                  CardHorizontal2(rekuest: rekuest),
-              ],
+      body: RefreshIndicator(
+        onRefresh: () {
+          return Future(() async {
+            controller.fetchRekuests();
+          });
+        },
+        child: Obx(
+          () => SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Column(
+                children: [
+                  for (var rekuest in controller.rekuestList)
+                    CardHorizontal2(rekuest: rekuest),
+                ],
+              ),
             ),
           ),
         ),

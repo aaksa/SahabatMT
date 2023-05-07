@@ -8,14 +8,14 @@ class MarketController extends GetxController {
 
   final count = 0.obs;
   // var produkList = <Produk>[].obs;
-  var isLoading = true.obs;
+
   // var isProduk = true.obs;
   var isButton1Active = true.obs;
   var isButton2Active = false.obs;
   final ProdukServices _services = ProdukServices();
 
   var marketData = <Produk>[].obs;
-
+  var isLoading = true.obs;
   @override
   void onInit() {
     fetchData();

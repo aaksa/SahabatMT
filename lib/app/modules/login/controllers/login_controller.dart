@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
@@ -10,6 +11,7 @@ class LoginController extends GetxController {
   String? email;
   String? password;
   String? notif;
+  RxBool isLoading = false.obs;
 
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   late TextEditingController emailController,
@@ -23,36 +25,52 @@ class LoginController extends GetxController {
   final count = 0.obs;
   @override
   void onInit() {
-    super.onInit();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     usernameController = TextEditingController();
+    super.onInit();
   }
 
   Future<void> login() async {
     try {
-      var email = emailController.text;
-      var password = passwordController.text;
-      await _authService.login(email, password);
-      Get.offAllNamed('/home');
+      isLoading.value = true;
+      final isValid = loginFormKey.currentState!.validate();
+      loginFormKey.currentState!.save();
+
+      if (isValid) {
+        Get.dialog(
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+        var email = emailController.text;
+        var password = passwordController.text;
+        await _authService.login(email, password);
+        Get.offAllNamed('/home');
+      }
     } catch (e) {
+      Get.back();
+      isLoading.value = false;
       print(e.toString());
-      Get.snackbar('Error', 'Failed to login');
+      Get.snackbar('Error', e.toString());
     }
   }
 
   @override
   void onReady() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    usernameController = TextEditingController();
     super.onReady();
   }
 
   @override
   void onClose() {
     loginFormKey.currentState?.dispose();
-    super.onClose();
     emailController.dispose();
     passwordController.dispose();
     usernameController.dispose();
+    super.onClose();
   }
 
   void toggleObscureText() {

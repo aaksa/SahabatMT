@@ -15,16 +15,23 @@ import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 
 class CartController extends GetxController {
   final _storage = GetStorage();
-  MidtransSDK? _midtrans;
 
   Rx<Produk> _product = Produk().obs;
   final RxInt jumlahpesan = 1.obs;
   Rx<Order> _order = Order().obs;
 
+  void setProduk(Produk p) {
+    _product.value = p;
+  }
+
+  // void setOrderan(Order order){
+  //   _order.value = order;
+  // }
+
   @override
   void onInit() {
     // Initialize the _product with the stored data
-    initSDK();
+    // initSDK();
     final hasData = _product.value != null;
     final storedData = _storage.read('product');
     final storedemail = _storage.read('email');
@@ -110,20 +117,4 @@ class CartController extends GetxController {
   //   // String snapToken = await _midtrans? getSnapToken(transaction);
   // }
 
-  void initSDK() async {
-    _midtrans = await MidtransSDK.init(
-      config: MidtransConfig(
-        clientKey: dot_env.dotenv.env['SB-Mid-client-dLSL_UUQIwVliBDR'] ?? "",
-        merchantBaseUrl:
-            dot_env.dotenv.env['SB-Mid-server-CQL5NRb_IwzlkRKI-6FNPc1_'] ?? "",
-      ),
-    );
-    _midtrans?.setUIKitCustomSetting(
-      skipCustomerDetailsPages: true,
-    );
-
-    _midtrans!.setTransactionFinishedCallback((result) {
-      print(result.toJson());
-    });
-  }
 }

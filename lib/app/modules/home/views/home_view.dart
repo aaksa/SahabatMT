@@ -29,152 +29,160 @@ class HomeView extends GetView<HomeController> {
             title: "Home",
           ),
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
-                  child: CarouselScroll(),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Produk Terbaru',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(Routes.LATESTPRODUCT);
-                        },
-                        child: Text(
-                          'Lihat Semua',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ],
+        body: RefreshIndicator(
+          onRefresh: () {
+            return Future(() async {
+              controller.fetchData();
+              controller.fetchData2();
+            });
+          },
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
+                    child: CarouselScroll(),
                   ),
-                ),
-                Container(
-                  height: getProperHeight(200),
-                  padding: EdgeInsets.symmetric(vertical: 3, horizontal: 21),
-                  child: Obx(() {
-                    if (controller.isLoading.value) {
-                      return Center(child: CircularProgressIndicator());
-                    } else {
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.produkList.length,
-                        itemBuilder: (context, index) {
-                          Produk produk = controller.produkList[index];
-                          return CardSmall(
-                            title: produk.nama!,
-                            img: produk.gambar!,
-                            produk: produk,
-                          );
-                        },
-                      );
-                    }
-                  }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Layanan Jasa',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(Routes.LATESTLAYANAN);
-                        },
-                        child: Text(
-                          'Lihat Semua',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: getProperHeight(200),
-                  padding: EdgeInsets.symmetric(vertical: 3, horizontal: 21),
-                  child: Obx(() {
-                    if (controller.isLoading2.value) {
-                      return Center(child: CircularProgressIndicator());
-                    } else {
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.jasaList.length,
-                        itemBuilder: (context, index) {
-                          Produk produk = controller.jasaList[index];
-                          return CardSmall(
-                            produk: produk,
-                            title: produk.nama!,
-                            img: produk.gambar!,
-                          );
-                        },
-                      );
-                    }
-                  }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Kamu Harus tau !',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      // Text(
-                      //   'Lihat Semua',
-                      //   style: TextStyle(
-                      //     color: Colors.red,
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                    child: Column(
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CardHorizontal(
-                          title: 'Pentingnya Membersihkan Air Conditioner',
-                          cta: 'Lihat Artikel',
-                          img:
-                              'https://coolbestaircon.com/wp-content/uploads/2020/11/The-Beginners-Guide-To-Aircon-Installation.png',
-                          tap: () {
-                            Get.toNamed(Routes.ARTICLE);
+                        Text(
+                          'Produk Terbaru',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.LATESTPRODUCT);
                           },
+                          child: Text(
+                            'Lihat Semua',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
+                  Container(
+                    height: getProperHeight(200),
+                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 21),
+                    child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.produkList.length,
+                          itemBuilder: (context, index) {
+                            Produk produk = controller.produkList[index];
+                            return CardSmall(
+                              title: produk.nama!,
+                              img: produk.gambar!,
+                              produk: produk,
+                            );
+                          },
+                        );
+                      }
+                    }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Layanan Jasa',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.LATESTLAYANAN);
+                          },
+                          child: Text(
+                            'Lihat Semua',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: getProperHeight(200),
+                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 21),
+                    child: Obx(() {
+                      if (controller.isLoading2.value) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.jasaList.length,
+                          itemBuilder: (context, index) {
+                            Produk produk = controller.jasaList[index];
+                            return CardSmall(
+                              produk: produk,
+                              title: produk.nama!,
+                              img: produk.gambar!,
+                            );
+                          },
+                        );
+                      }
+                    }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Kamu Harus tau !',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // Text(
+                        //   'Lihat Semua',
+                        //   style: TextStyle(
+                        //     color: Colors.red,
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                      child: Column(
+                        children: [
+                          CardHorizontal(
+                            title: 'Pentingnya Membersihkan Air Conditioner',
+                            cta: 'Lihat Artikel',
+                            img:
+                                'https://coolbestaircon.com/wp-content/uploads/2020/11/The-Beginners-Guide-To-Aircon-Installation.png',
+                            tap: () {
+                              Get.toNamed(Routes.ARTICLE);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

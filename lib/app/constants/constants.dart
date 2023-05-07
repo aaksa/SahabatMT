@@ -7,13 +7,21 @@ import '../modules/widgets/appbarviews.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 //url endpoint
+// //for api
+// const String baseUrl = 'http://34.125.129.117/api';
+//
+// //for storage
+// const String baseUrl2 = 'http://34.125.129.117';
+//
+// const String baseUrl3 = 'http://34.125.129.117/api/pay';
+
 //for api
-const String baseUrl = 'http://192.168.1.22:8000/api';
+const String baseUrl = 'http://192.168.43.50:8000/api';
 
 //for storage
-const String baseUrl2 = 'http://192.168.1.22:8000';
+const String baseUrl2 = 'http://192.168.43.50:8000';
 
-const String baseUrl3 = 'http://192.168.1.22:8000/api/pay';
+const String baseUrl3 = 'http://192.168.43.50:8000/api/pay';
 
 // For App Color
 const Color kPrimaryColor = Color(0xFFE8505B);

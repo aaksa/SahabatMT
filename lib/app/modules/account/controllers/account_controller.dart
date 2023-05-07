@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:sahabatmt/app/data/models/user_model2.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../services/auth_services.dart';
@@ -9,7 +10,7 @@ class AccountController extends GetxController {
 
   final AuthService _authService = AuthService();
   final GetStorage nyimpan = GetStorage();
-
+  var userData = UserModel2().obs;
   bool get isAuthenticated => _authService.isAuthenticated;
 
   var name = "".obs;
@@ -32,9 +33,19 @@ class AccountController extends GetxController {
   final count = 0.obs;
   @override
   void onInit() {
-    email.value = nyimpan.read('email');
-    name.value = nyimpan.read('nama');
+    // email.value = nyimpan.read('email');
+    // name.value = nyimpan.read('nama');
     // phone.value = nyimpan.read('phone');
+    // Retrieve the user data from GetStorage
+    var box = GetStorage();
+    var jsonData = box.read('user');
+    if (jsonData != null) {
+      userData.value = UserModel2.fromJson(jsonData);
+      var anu = UserModel2.fromJson(jsonData);
+      print(anu.nama);
+      print(anu.alamatLengkap);
+      print(UserModel2.fromJson(jsonData));
+    }
     super.onInit();
   }
 

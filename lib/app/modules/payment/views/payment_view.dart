@@ -48,14 +48,14 @@ class PaymentView extends StatefulWidget {
 }
 
 class _PaymentViewState extends State<PaymentView> {
-  final myOrder = Get.arguments as Order;
+  // final myOrder = Get.arguments as Order;
   final PaymentController paymentController = Get.put(PaymentController());
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      paymentController.payProduk(myOrder).then((_) {
+      paymentController.payProduk(paymentController.orderanbosku).then((_) {
         Navigator.push(
           context,
           MaterialPageRoute(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sahabatmt/app/constants/constants.dart';
 import 'package:sahabatmt/app/modules/widgets/appbarviews.dart';
+import 'package:sahabatmt/app/routes/app_pages.dart';
 
 import '../../widgets/card-shopping.dart';
 import '../components/address_dialog.dart';
@@ -49,7 +50,9 @@ class CartView extends GetView<CartController> {
                           MaterialStateProperty.all(kPrimaryLightColor)),
                   onPressed: () {
                     print(controller.orderan.toJson());
-                    Get.dialog(AddressDialog());
+                    // Get.dialog(AddressDialog());
+                    cartController.setProduk(controller.product);
+                    Get.toNamed(Routes.SHIPPING_ADDRESS);
                   },
                   child: Text("PROCEED TO CHECKOUT"),
                 ),

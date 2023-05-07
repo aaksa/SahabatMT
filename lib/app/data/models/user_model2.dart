@@ -1,6 +1,6 @@
-class UserModel {
-  int? id;
-  String? name, nomorHp, email, token;
+class UserModel2 {
+  String? id;
+  String? nama, nomorHp, email, token;
   String? provinsi;
   String? kota;
   String? kecamatan;
@@ -8,9 +8,9 @@ class UserModel {
   String? jalan;
   String? alamatLengkap;
 
-  UserModel({
+  UserModel2({
     this.id,
-    this.name,
+    this.nama,
     this.nomorHp,
     this.email,
     this.token,
@@ -22,10 +22,10 @@ class UserModel {
     this.alamatLengkap,
   });
 
-  UserModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    nomorHp = json['nomor_hp'];
+  UserModel2.fromJson(Map<String, dynamic> json) {
+    id = json['id'].toString();
+    nama = json['nama'];
+    nomorHp = json['nomor_hp'].toString();
     email = json['email'];
     token = json['token'];
     provinsi = json['Provinsi'];
@@ -38,9 +38,9 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': name,
-      'nomor_hp': nomorHp,
+      'id': int.tryParse(id!),
+      'nama': nama,
+      'nomor_hp': int.tryParse(nomorHp!),
       'email': email,
       'token': token,
       'Provinsi': provinsi,

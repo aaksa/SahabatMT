@@ -5,6 +5,7 @@ import 'package:sahabatmt/app/constants/constants.dart';
 import 'package:sahabatmt/app/modules/widgets/appbarviews.dart';
 import 'package:sahabatmt/app/routes/app_pages.dart';
 
+import '../../../data/models/cart.dart';
 import '../../widgets/card-shopping.dart';
 import '../components/address_dialog.dart';
 import '../controllers/cart_controller.dart';
@@ -26,71 +27,103 @@ class CartView extends GetView<CartController> {
           title: "Shopping Cart",
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(() => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                          "Cart subtotal (${cartController.itemCount} items): "),
-                      Text("Rp.${cartController.totalPrice}",
-                          style: TextStyle(fontWeight: FontWeight.bold))
-                    ],
-                  )),
-              SizedBox(height: 16),
-              Container(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(kPrimaryLightColor)),
-                  onPressed: () {
-                    print(controller.orderan.toJson());
-                    // Get.dialog(AddressDialog());
-                    cartController.setProduk(controller.product);
-                    Get.toNamed(Routes.SHIPPING_ADDRESS);
-                  },
-                  child: Text("PROCEED TO CHECKOUT"),
-                ),
-              ),
-              SizedBox(height: 16),
-              Divider(),
-              Column(
-                children: [
-                  Obx(() {
-                    if (cartController.product.nama == '' ||
-                        cartController.product.nama == null ||
-                        cartController.product.nama == 'none' ||
-                        cartController.product.nama == ' ') {
-                      return Center();
-                    } else {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: CardShopping(
-                          body: cartController.products.nama ?? '',
-                          stock: true,
-                          price: cartController.products.harga.toString(),
-                          img: cartController.products.gambar,
-                          deleteOnPress: () {
-                            cartController.removeFromCart();
-                          },
-                          kuantitas: cartController.products.kuantitas ?? 1,
-                          update: (value) {
-                            cartController.updatepesanan(value);
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Obx(() => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                                "Cart subtotal (${cartController.getTotalItemCount().toInt()} items): "),
+                            Text(
+                                "${cartController.formatPrice(cartController.totalPrice.toDouble())},-",
+                                style: TextStyle(fontWeight: FontWeight.bold))
+                          ],
+                        )),
+                    SizedBox(height: 16),
+                    Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(kPrimaryLightColor)),
+                        onPressed: () {
+                          // Get.dialog(AddressDialog());
+                          // List<Cart?> cartItems =
+                          //     cartController.cartItemsList.value;
+                          // List<Cart> nonNullableCartItems =
+                          //     cartItems.whereType<Cart>().toList();
+                          // cartController.setProduk(nonNullableCartItems);
+                          controller.savethecurrentItemsToStorage;
+                          Get.toNamed(Routes.SHIPPING_ADDRESS);
+                        },
+                        child: Text("PROCEED TO CHECKOUT"),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Divider(),
+                    Column(
+                      children: [
+                        Obx(
+                          () {
+                            final cartItemsList =
+                                controller.cartItemsList.value;
+                            if (cartItemsList.isEmpty) {
+                              return Center(
+                                child: Text('Your cart is empty'),
+                              );
+                            } else {
+                              return SizedBox(
+                                height: MediaQuery.of(context).size.height,
+                                child: ListView.builder(
+                                  itemCount:
+                                      controller.cartItemsList.value.length,
+                                  itemBuilder: (context, index) {
+                                    final item =
+                                        controller.cartItemsList.value[index];
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 8),
+                                      child: CardShopping(
+                                        body: item.produk?.nama ?? '',
+                                        stock: true,
+                                        price: cartController.formatPrice(
+                                            item.produk?.harga?.toDouble() ??
+                                                0),
+                                        img: item.produk?.gambar,
+                                        deleteOnPress: () {
+                                          controller.removeFromCart(item);
+                                        },
+                                        kuantitas: item.quantity ?? 1,
+                                        update: (value) {
+                                          controller.updateCartItemQuantity(
+                                              item, value);
+                                        },
+                                        list: controller.dropdownValues,
+                                        selectedValue: cartItemsList
+                                            .value[index].quantity!,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            }
                           },
                         ),
-                      );
-                    }
-                  }),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

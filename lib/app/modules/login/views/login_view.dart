@@ -36,8 +36,12 @@ class LoginView extends GetView<LoginController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                          width: 70,
-                          child: Image.asset("assets/images/logo_splash.png")),
+                          width: getProperWidht(140),
+                          child: Image.asset(
+                            "assets/icons/logosmt.jpg",
+                            height: getProperHeight(140),
+                            width: getProperWidht(140),
+                          )),
                     ],
                   ),
                 ),
@@ -86,13 +90,25 @@ class LoginView extends GetView<LoginController> {
                                     TextFormField(
                                       controller: controller.emailController,
                                       decoration: InputDecoration(
-                                        labelText: 'Email',
+                                        labelText: 'Email atau Nomor Telepon',
                                       ),
                                       onSaved: (value) {
                                         controller.email = value;
                                       },
                                       validator: (value) {
-                                        return controller.validateEmail(value!);
+                                        if (value == null || value.isEmpty) {
+                                          return 'Email atau nomor telepon harus diisi';
+                                        }
+                                        // regex pattern to match email
+                                        final emailRegex = RegExp(
+                                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                                        // regex pattern to match phone number (Indonesian format)
+                                        final phoneRegex = RegExp(r'^\d{9,}$');
+                                        if (!emailRegex.hasMatch(value) &&
+                                            !phoneRegex.hasMatch(value)) {
+                                          return 'Harap masukkan email atau nomor telepon yang valid';
+                                        }
+                                        return null;
                                       },
                                     ),
                                     SizedBox(height: 20),
@@ -136,7 +152,9 @@ class LoginView extends GetView<LoginController> {
                                                 textAlign: TextAlign.start,
                                                 textWidthBasis:
                                                     TextWidthBasis.parent)),
-                                        onTap: () {}),
+                                        onTap: () {
+                                          Get.toNamed(Routes.RESET_PASSWORD);
+                                        }),
                                   ],
                                 ),
                               ),

@@ -11,21 +11,22 @@ class Cart {
     this.quantity,
   });
 
-  Cart.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    produk = Produk.fromJson(json['produk']);
-    quantity = json['kuantitas'];
+  factory Cart.fromJson(Map<String, dynamic> json) {
+    return Cart(
+      produk: Produk.fromJson2(json['produk']),
+      quantity: json['quantity'],
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'hasil_tangkapan': produk!.toJson(),
+      'produk': produk!.toJson(),
       'quantity': quantity,
     };
   }
 
   double getTotalPrice() {
-    return produk!.harga! * quantity! as double;
+    return (produk!.harga?.toDouble())! * quantity!;
   }
 }

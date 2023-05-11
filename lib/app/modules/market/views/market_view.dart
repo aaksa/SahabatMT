@@ -23,7 +23,7 @@ class MarketView extends GetView<MarketController> {
         backgroundColor: kBackgroundColor1,
         iconTheme: IconThemeData(color: kPrimaryTextColor),
         automaticallyImplyLeading: false,
-        title: appbarview(title: "Market"),
+        title: appbarview(title: "AppStore"),
       ),
       body: RefreshIndicator(
         onRefresh: () {

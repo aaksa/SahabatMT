@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:sahabatmt/app/data/models/produk.dart';
 import 'package:sahabatmt/app/modules/cart/controllers/cart_controller.dart';
 
+import '../../../data/models/cart.dart';
 import '../../../data/models/user_model2.dart';
 
 class ShippingAddressController extends GetxController {
@@ -16,10 +17,12 @@ class ShippingAddressController extends GetxController {
   var selectedProvince = 'Sulawesi Selatan'.obs;
   var provinceList = ['Sulawesi Selatan', 'Sulawesi'].obs;
   var selectedKota = 'Makassar'.obs;
-  var kotaList = ['Makassar', 'Barru', 'Gowa'].obs;
+  var kotaList = ['Makassar', 'Gowa', 'Maros', 'Barombong'].obs;
 
   // RxString? kecamatan = ''.obs;
   var kecamatan = TextEditingController().obs;
+  var ongkoskirim = TextEditingController().obs;
+
   // RxString? kelurahan = ''.obs;
   var kelurahan = TextEditingController().obs;
   // RxString? jalan = ''.obs;
@@ -29,13 +32,33 @@ class ShippingAddressController extends GetxController {
 
   String address = '';
 
+  final _storage = GetStorage();
+  var cartItemsList = RxList<Cart>([]).obs;
+  Addresum addplusnum = Addresum(
+      number: '', adress: '', city: '', nama: '', email: '', ongkir: '');
+
   void setaddress() {
     String kelur = kelurahan.value.text;
     String jalanan = jalan.value.text;
     String prov = selectedProvince.value;
     String kot = selectedKota.value;
     String kec = kecamatan.value.text;
-    address = '$jalan, $kelurahan, kecamatan $kecamatan, $kot, $prov ';
+    address = '$jalanan $kelur $kec, $prov, ';
+
+    addplusnum.adress = address;
+    addplusnum.number = nomorHandphone.value.text;
+    addplusnum.city = kot;
+    addplusnum.email = userData.value.email ?? '';
+    addplusnum.nama = userData.value.nama ?? '';
+    addplusnum.ongkir = ongkoskirim.value.text ?? '0';
+  }
+
+  void onkirdong(String kota) {
+    if (kota == 'Maros' || kota == 'Gowa' || kota == 'Barombong') {
+      ongkoskirim.value.text = '15000';
+    } else {
+      ongkoskirim.value.text = '0';
+    }
   }
 
   String get shipadres => address;
@@ -51,6 +74,7 @@ class ShippingAddressController extends GetxController {
       userData.value = UserModel2.fromJson(jsonData);
       selectedKota.value = userData.value.kota ?? 'Makassar';
       selectedProvince.value = userData.value.provinsi ?? 'Sulawesi Selatan';
+      onkirdong(selectedKota.value);
     }
   }
 
@@ -73,12 +97,6 @@ class ShippingAddressController extends GetxController {
   // var data = Produk().obs;
   var Items = <Produk>[].obs;
 
-  // void addToItems() {
-  //   var cartController = Get.find<CartController>();
-  //   var produk = cartController.product;
-  //   Items.add(produk);
-  // }
-
   final List<String> shippingList = [
     'JNE',
     'TIKI',
@@ -90,6 +108,7 @@ class ShippingAddressController extends GetxController {
   void onInit() {
     // addToItems();
     setdata();
+
     super.onInit();
   }
 
@@ -104,4 +123,21 @@ class ShippingAddressController extends GetxController {
   }
 
   void increment() => count.value++;
+}
+
+class Addresum {
+  String nama;
+  String email;
+  String number;
+  String adress;
+  String city;
+  String ongkir;
+
+  Addresum(
+      {required this.number,
+      required this.adress,
+      required this.city,
+      required this.nama,
+      required this.email,
+      required this.ongkir});
 }

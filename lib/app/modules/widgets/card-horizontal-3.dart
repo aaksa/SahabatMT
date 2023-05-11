@@ -1,43 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:sahabatmt/app/constants/constants.dart';
-import 'package:sahabatmt/app/data/models/Rekuest.dart';
 
-class CardHorizontal2 extends StatelessWidget {
-  CardHorizontal2(
+class CardHorizontal3 extends StatelessWidget {
+  CardHorizontal3(
       {this.title = "Placeholder Title",
-      this.cta = "View Article",
+      this.cta = "Lihat Artikel",
       this.img = "https://via.placeholder.com/200",
       this.tap = defaultFunc,
-      required this.rekuest});
+      this.harga = '1000',
+      this.kondisi = ''});
 
   final String cta;
+  final String kondisi;
+  final String harga;
   final String img;
   final Function()? tap;
   final String title;
-  final Rekuest rekuest;
 
   static void defaultFunc() {
     print("the function works!");
   }
 
-  Color _getColorForPengajuan(String? pengajuan) {
-    switch (pengajuan) {
-      case "ongoing":
-        return Colors.yellow;
-      case "rejected":
-        return Colors.red;
-      case "accepted":
-        return Colors.green;
-      default:
-        return Colors.grey;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    String nama = rekuest.nama!;
-    String harga = rekuest.harga.toString();
-    String kondisi = rekuest.kondisi!;
     return Container(
         height: 130,
         margin: EdgeInsets.only(top: 20),
@@ -54,35 +39,45 @@ class CardHorizontal2 extends StatelessWidget {
                   Flexible(
                       flex: 1,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        padding: const EdgeInsets.only(
+                            top: 8.0, bottom: 8.0, right: 4),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween, // <-- add this
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Nama : $nama',
-                                style: TextStyle(
-                                    color: kPrimaryTextColor, fontSize: 13)),
-                            Text('Harga : $harga',
-                                style: TextStyle(
-                                    color: kPrimaryTextColor, fontSize: 13)),
-                            Text('Kondisi : $kondisi',
-                                style: TextStyle(
-                                    color: kPrimaryTextColor, fontSize: 13)),
-                            Container(
-                              padding: EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                color: _getColorForPengajuan(rekuest.pengajuan),
-                                borderRadius: BorderRadius.circular(4.0),
+                            Text(
+                              title,
+                              style: TextStyle(
+                                color: kPrimaryTextColor,
+                                fontSize: 13,
                               ),
-                              child: Text(
-                                rekuest.pengajuan!,
-                                style: TextStyle(
-                                  color: kBackgroundColor1,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              "Harga : $harga",
+                              style: TextStyle(
+                                color: kPrimaryTextColor,
+                                fontSize: 13,
                               ),
-                            )
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              "$kondisi",
+                              style: TextStyle(
+                                color: kPrimaryTextColor,
+                                fontSize: 13,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text('Lihat Layanan',
+                                style: TextStyle(
+                                    color: kSubtitleTextColor,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600))
                           ],
                         ),
                       ))
@@ -111,9 +106,7 @@ class CardHorizontal2 extends StatelessWidget {
                           ],
                           borderRadius: BorderRadius.all(Radius.circular(4.0)),
                           image: DecorationImage(
-                              image: NetworkImage(
-                                  rekuest.takeImage(rekuest.gambar!)),
-                              fit: BoxFit.cover))),
+                              image: NetworkImage(img), fit: BoxFit.cover))),
                 ),
               ),
             ),

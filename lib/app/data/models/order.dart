@@ -1,3 +1,5 @@
+import 'cart.dart';
+
 class Order {
   String? nama;
   String? email;
@@ -8,17 +10,18 @@ class Order {
   String? namaBarang;
   String? kuantitas;
   String? harga;
+  List<Cart>? cartList;
 
-  Order({
-    this.nama,
-    this.email,
-    this.phone,
-    this.address,
-    this.grossAmount,
-    this.namaBarang,
-    this.kuantitas,
-    this.harga,
-  });
+  Order(
+      {this.nama,
+      this.email,
+      this.phone,
+      this.address,
+      this.grossAmount,
+      this.namaBarang,
+      this.kuantitas,
+      this.harga,
+      this.cartList});
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
@@ -30,6 +33,7 @@ class Order {
       namaBarang: json['nama_barang'],
       kuantitas: json['kuantitas'],
       harga: json['harga'],
+      cartList: List<Cart>.from(json['cartList'].map((x) => Cart.fromJson(x))),
     );
   }
 
@@ -43,6 +47,7 @@ class Order {
     data['nama_barang'] = this.namaBarang;
     data['kuantitas'] = this.kuantitas;
     data['harga'] = this.harga;
+    data['cartList'] = cartList?.map((x) => x.toJson()).toList();
     return data;
   }
 }

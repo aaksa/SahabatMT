@@ -51,6 +51,7 @@ class AuthService {
 
         return true;
       } else {
+        print(response.body);
         throw Exception('Error saat melakukan login');
       }
     } catch (e) {
@@ -90,16 +91,19 @@ class AuthService {
         // Parse the authentication token from the response body
         var body = json.decode(response.body);
         _token = body['data']['access_token'];
+        var user = body['data']['user'];
         userId = body['data']['user']['id'].toString();
         _email = body['data']['user']['email'].toString();
         _nama = body['data']['user']['nama'].toString();
         _phone = body['data']['user']['nomor_hp'].toString();
 
+        userData.value = UserModel2.fromJson(user);
         await box.write(tokenKey, _token);
         await box.write('userId', userId);
         await box.write('email', _email);
         await box.write('nama', _nama);
         await box.write('phone', _phone);
+        await box.write('user', userData.value.toJson());
 
         return true;
       } else {
@@ -117,6 +121,7 @@ class AuthService {
 
   void logout() async {
     _token = null;
+    box.erase();
     await box.remove(tokenKey);
   }
 }

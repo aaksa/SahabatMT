@@ -34,7 +34,7 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
                   ? kPrimaryColor
                   : Color(0xFF808191),
             ),
-            label: 'Market',
+            label: 'AppStore',
           ),
           BottomNavigationBarItem(
             icon: Icon(

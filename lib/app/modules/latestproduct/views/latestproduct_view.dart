@@ -7,6 +7,7 @@ import 'package:sahabatmt/app/modules/widgets/card-horizontal.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../widgets/appbarviews.dart';
+import '../../widgets/card-horizontal-3.dart';
 import '../controllers/latestproduct_controller.dart';
 
 class LatestproductView extends GetView<LatestproductController> {
@@ -19,22 +20,28 @@ class LatestproductView extends GetView<LatestproductController> {
         iconTheme: IconThemeData(color: kPrimaryTextColor),
         title: appbarviews(title: "Produk Terbaru"),
       ),
-      body: Obx(() {
-        final latestData = controller.marketData.take(4).toList();
-        return ListView.builder(
-          itemCount: latestData.length,
-          itemBuilder: (context, index) {
-            return CardHorizontal(
-                title: latestData[index].nama ?? 'Error',
-                img: latestData[index].gambar ?? 'Error',
-                cta: latestData[index].harga.toString() ?? 'Error',
-                tap: () {
-                  Get.toNamed(Routes.PRODUCTDETAIL,
-                      arguments: latestData[index]);
-                });
-          },
-        );
-      }),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Obx(() {
+          final latestData = controller.marketData.toList().reversed.toList();
+          return ListView.builder(
+            itemCount: latestData.length,
+            itemBuilder: (context, index) {
+              return CardHorizontal3(
+                  title: latestData[index].nama ?? 'Error',
+                  img: latestData[index].gambar ?? 'Error',
+                  harga: latestData[index].harga.toString() ?? "Error",
+                  kondisi: 'Kondisi : ${latestData[index].kondisi}',
+                  // cta: latestData[index].harga.toString() ?? 'Error',
+                  cta: 'Lihat Produk',
+                  tap: () {
+                    Get.toNamed(Routes.PRODUCTDETAIL,
+                        arguments: latestData[index]);
+                  });
+            },
+          );
+        }),
+      ),
     );
   }
 }

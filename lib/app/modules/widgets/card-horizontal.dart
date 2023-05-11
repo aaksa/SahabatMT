@@ -4,7 +4,7 @@ import 'package:sahabatmt/app/constants/constants.dart';
 class CardHorizontal extends StatelessWidget {
   CardHorizontal(
       {this.title = "Placeholder Title",
-      this.cta = "View Article",
+      this.cta = "Lihat Artikel",
       this.img = "https://via.placeholder.com/200",
       this.tap = defaultFunc});
 
@@ -35,14 +35,21 @@ class CardHorizontal extends StatelessWidget {
                   Flexible(
                       flex: 1,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        padding: const EdgeInsets.only(
+                            top: 8.0, bottom: 8.0, right: 4),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(title,
-                                style: TextStyle(
-                                    color: kPrimaryTextColor, fontSize: 13)),
+                            Text(
+                              title,
+                              style: TextStyle(
+                                color: kPrimaryTextColor,
+                                fontSize: 13,
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                             Text(cta,
                                 style: TextStyle(
                                     color: kSubtitleTextColor,

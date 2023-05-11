@@ -54,7 +54,7 @@ class SignupController extends GetxController {
         await _authService.register(nama, email, password, nomorHp, provinsi,
             kota, kecamatan, kelurahan, jalan, alamat_lengkap);
         // Get.offAllNamed('/home');
-        Get.offAllNamed(Routes.HOME);
+        Get.offAllNamed('/home');
       }
     } catch (e) {
       Get.back();
@@ -67,8 +67,8 @@ class SignupController extends GetxController {
   var cities = [
     'Makassar',
     'Gowa',
-    'Barru',
-    'Takalar',
+    'Maros',
+    'Barombong',
   ].obs;
 
   //

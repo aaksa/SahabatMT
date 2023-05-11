@@ -12,7 +12,8 @@ class CardShopping extends StatelessWidget {
   final int? kuantitas;
   final Function() deleteOnPress;
   final Function(int) update;
-
+  final RxList<int> list;
+  final int selectedValue;
   CardShopping({
     this.body = "Placeholder Title",
     this.stock = true,
@@ -21,6 +22,8 @@ class CardShopping extends StatelessWidget {
     required this.deleteOnPress,
     required this.kuantitas,
     required this.update,
+    required this.list,
+    required this.selectedValue,
   });
 
   @override
@@ -73,6 +76,8 @@ class CardShopping extends StatelessWidget {
                             height: 35,
                             child: Dropdown(
                               kuantitass: update,
+                              list: list,
+                              selectedValues: selectedValue,
                             ),
                           ),
                         ),
@@ -111,7 +116,7 @@ class CardShopping extends StatelessWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(right: 8.0),
-                              child: Text("\$$price",
+                              child: Text("$price,-",
                                   style: TextStyle(
                                       color: kPrimaryLightColor,
                                       fontSize: 11,
@@ -121,8 +126,8 @@ class CardShopping extends StatelessWidget {
                         ),
                       ),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -143,24 +148,6 @@ class CardShopping extends StatelessWidget {
                                   color: kBackgroundColor1,
                                   fontSize: 10.0,
                                 ),
-                              ),
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              primary: kPrimaryLightColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 4.0, vertical: 11.0),
-                            ),
-                            child: Text(
-                              'SAVE FOR LATER',
-                              style: TextStyle(
-                                color: kBackgroundColor1,
-                                fontSize: 10.0,
                               ),
                             ),
                           ),
@@ -234,11 +221,16 @@ class CardShopping extends StatelessWidget {
 // }
 class Dropdown extends StatelessWidget {
   final Function(int) kuantitass;
-  Dropdown({Key? key, required this.kuantitass}) : super(key: key);
+  final RxList<int> list;
+  int selectedValues;
+  Dropdown(
+      {Key? key,
+      required this.kuantitass,
+      required this.list,
+      required this.selectedValues})
+      : super(key: key);
 
   // String dropdownValue = '1';
-  final RxString dropdownValue =
-      '1'.obs; // Create RxString to hold dropdown value
 
   @override
   Widget build(BuildContext context) {
@@ -250,8 +242,8 @@ class Dropdown extends StatelessWidget {
             data: Theme.of(context).copyWith(
               canvasColor: kPrimaryLightColor,
             ),
-            child: DropdownButton<String>(
-              value: dropdownValue.value,
+            child: DropdownButton<int>(
+              value: selectedValues,
               icon: Padding(
                 padding: const EdgeInsets.only(left: 25.0, bottom: 5),
                 child: Icon(
@@ -262,21 +254,35 @@ class Dropdown extends StatelessWidget {
               iconSize: 20,
               elevation: 1,
               style: TextStyle(color: Colors.white),
-              onChanged: (String? newValue) {
-                dropdownValue.value = newValue!;
-                kuantitass(int.parse(newValue!));
+              onChanged: (int? newValue) {
+                selectedValues = newValue!;
+                kuantitass(newValue);
               },
-              items: <String>['1', '2', '3', '4', '5', '6', '7', '8', '9']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value,
-                      style: TextStyle(
-                          color: kBackgroundColor1,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12.0)),
-                );
-              }).toList(),
+              items: list
+                  .map((value) => DropdownMenuItem<int>(
+                        value: value,
+                        child: Text(value.toString(),
+                            style: TextStyle(
+                                color: kBackgroundColor1,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.0)),
+                      ))
+                  .toList(),
+
+              // DropdownButtonFormField(
+              //   value: controller.selectedKota.value,
+              //   items: controller.kotaList
+              //       .map((province) => DropdownMenuItem(
+              //     value: province,
+              //     child: Text(province),
+              //   ))
+              //       .toList(),
+              //   onChanged: (selectedValue) =>
+              //   controller.selectedKota.value = selectedValue!,
+              //   decoration: InputDecoration(
+              //     hintText: 'Select province',
+              //   ),
+              // )
             ),
           ),
         ),

@@ -9,112 +9,133 @@ import 'package:midtrans_sdk/midtrans_sdk.dart';
 import 'package:http/http.dart' as http;
 import 'package:sahabatmt/app/data/models/order.dart';
 
-import '../../../data/models/produk.dart';
+import '../../../data/models/cart.dart';
+import 'package:sahabatmt/app/data/models/produk.dart';
 import '../../../data/models/transaction.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 
 class CartController extends GetxController {
+  var cartItemsList = RxList<Cart>([]).obs;
+
   final _storage = GetStorage();
+  var totalItem = RxInt(0).obs;
 
-  Rx<Produk> _product = Produk().obs;
-  final RxInt jumlahpesan = 1.obs;
-  Rx<Order> _order = Order().obs;
+  var selectedValues = 1.obs; // Create RxInt to hold dropdown value
+  var dropdownValues = RxList([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-  void setProduk(Produk p) {
-    _product.value = p;
-  }
+  void addToCart(Produk produk, int quantity) {
+    Cart cartItem = Cart(
+      produk: produk,
+      quantity: quantity,
+    );
 
-  // void setOrderan(Order order){
-  //   _order.value = order;
-  // }
+    var cartItems = cartItemsList.value;
+    Cart? existingCartItem = cartItems.firstWhereOrNull(
+      (item) => item.produk!.id == produk.id,
+      // set nullable to true to allow returning null
+    );
 
-  @override
-  void onInit() {
-    // Initialize the _product with the stored data
-    // initSDK();
-    final hasData = _product.value != null;
-    final storedData = _storage.read('product');
-    final storedemail = _storage.read('email');
-    final storedname = _storage.read('nama');
-
-    if (storedData != null) {
-      _product.value = Produk.fromJson2(storedData);
-    }
-    jumlahpesan.value = 1;
-    _order.value.kuantitas = jumlahpesan.value.toString();
-    _order.value.email = storedemail;
-    _order.value.nama = storedname;
-    _order.value.phone = '';
-    _order.value.address = '';
-    super.onInit();
-  }
-
-  void updatepesanan(int pesan) {
-    jumlahpesan.value = pesan;
-    _order.value.kuantitas = pesan.toString();
-    print(jumlahpesan.value);
-    print("HAHAHHA");
-  }
-
-// Adds a product to the cart
-  void addToCart(Produk product) {
-    if (product.nama == _product.value.nama) {
-      Get.snackbar(
-        "Barang sudah ada",
-        "Silahkan checkout terlebih dahulu",
-        duration: Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+    if (existingCartItem != null) {
+      existingCartItem.quantity = existingCartItem.quantity! + quantity;
     } else {
-      _product.value = product;
-      _storage.write('product', _product.value.toJson());
-      _order.value.namaBarang = product.nama;
-      _order.value.harga = product.harga.toString();
-      Get.snackbar(
-        "Barang sudah ditambahkan",
-        "Silahkan checkout di keranjang",
-        duration: Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      // create new cart item if none exists
+      cartItems.add(cartItem);
+    }
+
+    cartItemsList.value = cartItems;
+    // _storage.write('cartItems', cartItemsList.value.toJson());
+    _storage.write(
+        'cartItems', cartItemsList.value.map((item) => item.toJson()).toList());
+  }
+
+  void _loadCartItemsFromStorage() {
+    final List<dynamic>? cartData = _storage.read('cartItems');
+    if (cartData != null) {
+      final cartItems = cartData.map((item) => Cart.fromJson(item)).toList();
+      cartItemsList.value = RxList<Cart>.from(cartItems);
+
+      getTotalItemCount();
     }
   }
 
-// Removes a product from the cart
-  void removeFromCart() {
-    _product.value = Produk(nama: 'none', id: 0);
-    // Remove the data from local storage
-    _storage.remove('product');
+  void savethecurrentItemsToStorage() {
+    _storage.write(
+        'cartItems', cartItemsList.value.map((item) => item.toJson()).toList());
   }
 
-// Gets the product in the cart
-  Produk get product => _product.value;
-
-  // Gets the total price of all products in the cart
   double get totalPrice {
     double total = 0.0;
-    total += (jumlahpesan.value * (_product.value.harga ?? 0).toDouble());
-    _order.value.grossAmount = total.toString();
+    for (var item in cartItemsList.value) {
+      total += item.getTotalPrice();
+    }
     return total;
   }
 
-  // Gets the number of products in the cart
-  int? get itemCount => jumlahpesan.value;
+  int getTotalItemCount() {
+    int totalCount = 0;
+    for (var cartItem in cartItemsList.value) {
+      totalCount += cartItem.quantity ?? 0;
+    }
+    // totalItem.value = totalCount;
+    return totalCount;
+  }
 
-  // Gets the list of products in the cart
-  Produk get products => _product.value;
+  String formatPrice(double price) {
+    final formatter = NumberFormat.currency(
+      locale: 'id_ID',
+      decimalDigits: 0,
+      symbol: 'Rp.',
+    );
+    return formatter.format(price);
+  }
 
-  Order get orderan => _order.value;
-
-  // void makepay() async {
-  //   Transaction transaction = Transaction(
-  //     id: "ORDER-ID",
-  //     amount: 100000,
-  //     customerName: "aksa",
-  //     customerEmail: "aksa@gmail.com",
-  //     customerPhone: "082192571080",
-  //   );
-  //
-  //   // String snapToken = await _midtrans? getSnapToken(transaction);
+  // void getTotalItemCount() {
+  //   // RxInt totalCount = RxInt(0);
+  //   for (var cartItem in cartItemsList.value) {
+  //     totalItem.value += cartItem.quantity ?? 0;
+  //   }
+  //   print('totalCount');
+  //   print(totalItem.value);
+  //   // totalItem.value = totalCount;
   // }
 
+  void removeFromCart(Cart item) {
+    cartItemsList.value.remove(item);
+    print(cartItemsList.value.asMap());
+    _storage.write(
+      'cartItems',
+      cartItemsList.value.map((item) => item.toJson()).toList(),
+    );
+  }
+
+  void setProduk(Cart cart) {}
+
+  void updateCartItemQuantity(Cart item, int quantity) {
+    item.quantity = quantity;
+    cartItemsList.refresh();
+    print(item.quantity);
+    _storage.write(
+      'cartItems',
+      cartItemsList.value.map((item) => item.toJson()).toList(),
+    );
+  }
+
+  void clearCart() {
+    cartItemsList.value.clear();
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    _loadCartItemsFromStorage();
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    _loadCartItemsFromStorage();
+    super.onReady();
+  }
 }

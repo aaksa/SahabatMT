@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:sahabatmt/app/constants/constants.dart';
+import 'package:sahabatmt/app/data/models/user_model2.dart';
 import 'package:sahabatmt/app/modules/bottom_nav_bar/views/bottom_nav_bar_view.dart';
 import 'package:sahabatmt/app/modules/widgets/appbarviews.dart';
 
@@ -73,13 +74,6 @@ class AccountView extends GetView<AccountController> {
                         Obx(() =>
                             Text(controller.userData.value.nomorHp.toString())),
                         SizedBox(height: 16.0),
-                        Text(
-                          'Address',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 8.0),
-                        Obx(() => Text(controller.userData.value.alamatLengkap
-                            .toString())),
                       ],
                     ),
                   ),
@@ -96,18 +90,19 @@ class AccountView extends GetView<AccountController> {
                 leading: Icon(Icons.person),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  Get.dialog(EditProfileDialog(controller));
+                  Get.dialog(
+                      EditProfileDialog(controller.userData.value, controller));
                   // Navigate to profile editing page
                 },
               ),
-              ListTile(
-                title: Text('Change Password'),
-                leading: Icon(Icons.lock),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  // Navigate to password changing page
-                },
-              ),
+              // ListTile(
+              //   title: Text('Change Password'),
+              //   leading: Icon(Icons.lock),
+              //   trailing: Icon(Icons.arrow_forward_ios),
+              //   onTap: () {
+              //     // Navigate to password changing page
+              //   },
+              // ),
               SizedBox(height: 16.0),
               TextButton(
                 onPressed: () {
@@ -133,22 +128,19 @@ class AccountView extends GetView<AccountController> {
 }
 
 class EditProfileDialog extends StatelessWidget {
-  final AccountController controller;
+  AccountController controller;
+  final UserModel2 user;
 
-  EditProfileDialog(this.controller);
+  EditProfileDialog(this.user, this.controller, {super.key});
 
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     // Set the initial values for the text fields to the current user values
-    nameController.text = controller.name.value;
-    emailController.text = controller.email.value;
-    phoneController.text = controller.phone.value;
-    addressController.text = controller.address.value;
+    nameController.text = user.nama ?? '';
+    phoneController.text = user.nomorHp ?? '';
 
     return AlertDialog(
       title: Text('Edit Profile'),
@@ -161,16 +153,8 @@ class EditProfileDialog extends StatelessWidget {
               decoration: InputDecoration(labelText: 'Name'),
             ),
             TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
               controller: phoneController,
               decoration: InputDecoration(labelText: 'Phone'),
-            ),
-            TextField(
-              controller: addressController,
-              decoration: InputDecoration(labelText: 'Address'),
             ),
           ],
         ),
@@ -185,9 +169,7 @@ class EditProfileDialog extends StatelessWidget {
             // Update the user's profile with the new values
             controller.updateProfile(
               nameController.text,
-              emailController.text,
               phoneController.text,
-              addressController.text,
             );
             Get.back();
           },

@@ -34,6 +34,7 @@ class HomeView extends GetView<HomeController> {
             return Future(() async {
               controller.fetchData();
               controller.fetchData2();
+              controller.fetchArtikel();
             });
           },
           child: SafeArea(
@@ -162,25 +163,31 @@ class HomeView extends GetView<HomeController> {
                       ],
                     ),
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                      child: Column(
-                        children: [
-                          CardHorizontal(
-                            title: 'Pentingnya Membersihkan Air Conditioner',
-                            cta: 'Lihat Artikel',
-                            img:
-                                'https://coolbestaircon.com/wp-content/uploads/2020/11/The-Beginners-Guide-To-Aircon-Installation.png',
-                            tap: () {
-                              Get.toNamed(Routes.ARTICLE);
-                            },
+                  Obx(() {
+                    final artikelList = controller.artikel.value;
+                    if (artikelList.isEmpty) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                          child: Column(
+                            children: artikelList.map((artikel) {
+                              return CardHorizontal(
+                                title: artikel.title ?? '',
+                                img: artikel.image ?? '',
+                                tap: () {
+                                  Get.toNamed(Routes.ARTICLE,
+                                      arguments: artikel);
+                                },
+                              );
+                            }).toList(),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
+                      );
+                    }
+                  }),
                 ],
               ),
             ),

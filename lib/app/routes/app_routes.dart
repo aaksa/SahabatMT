@@ -23,6 +23,7 @@ abstract class Routes {
   static const ARTICLE = _Paths.ARTICLE;
   static const PAYMENT = _Paths.PAYMENT;
   static const SHIPPING_ADDRESS = _Paths.SHIPPING_ADDRESS;
+  static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
 }
 
 abstract class _Paths {
@@ -47,4 +48,5 @@ abstract class _Paths {
   static const ARTICLE = '/article';
   static const PAYMENT = '/payment';
   static const SHIPPING_ADDRESS = '/shipping-address';
+  static const RESET_PASSWORD = '/reset-password';
 }

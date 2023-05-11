@@ -23,7 +23,7 @@ class appbarview extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () {},
-              icon: Image.asset('assets/images/logo_splash.png'),
+              icon: Image.asset('assets/icons/logosmt.jpg'),
             ),
             SizedBox(width: 10),
             Text(

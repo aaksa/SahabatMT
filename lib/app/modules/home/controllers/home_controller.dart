@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:get/get.dart';
-
+import 'package:sahabatmt/app/services/artikel_services.dart';
+import 'package:sahabatmt/app/data/articlemodel.dart';
 import '../../../services/produk_services.dart';
 import 'package:sahabatmt/app/data/models/produk.dart';
 
@@ -12,8 +13,10 @@ class HomeController extends GetxController {
   CarouselController buttonCarouselController = CarouselController();
 
   final ProdukServices _services = ProdukServices();
+  final ArtikelServices _services2 = ArtikelServices();
   var produkList = <Produk>[].obs;
   var jasaList = <Produk>[].obs;
+  var artikel = <Artikel>[].obs;
 
   var isLoading = true.obs;
   var isLoading2 = true.obs;
@@ -49,11 +52,13 @@ class HomeController extends GetxController {
   void onInit() {
     fetchData();
     fetchData2();
+    fetchArtikel();
     super.onInit();
   }
 
   @override
   void onReady() async {
+    fetchArtikel();
     super.onReady();
   }
 
@@ -82,6 +87,15 @@ class HomeController extends GetxController {
       print(e.toString());
     } finally {
       isLoading2(false);
+    }
+  }
+
+  void fetchArtikel() async {
+    try {
+      List<Artikel> articles = await _services2.fetchArtikel();
+      artikel.assignAll(articles);
+    } catch (e) {
+      print('Failed to fetch articles: $e');
     }
   }
 

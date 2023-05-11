@@ -59,12 +59,34 @@ class ShippingAddressView extends GetView<ShippingAddressController> {
                               child: Text(province),
                             ))
                         .toList(),
-                    onChanged: (selectedValue) =>
-                        controller.selectedKota.value = selectedValue!,
+                    onChanged: (selectedValue) {
+                      controller.selectedKota.value = selectedValue!;
+                      controller.onkirdong(selectedValue);
+                    },
                     decoration: InputDecoration(
                       hintText: 'Select province',
                     ),
                   )),
+              SizedBox(height: 16),
+              Text(
+                'Ongkos Kirim',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.ongkoskirim.value,
+                      readOnly: true, // set this to true
+                      decoration: InputDecoration(
+                        hintText: 'Ongkos Kirim',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              //end
               SizedBox(height: 16),
               Text(
                 'Kecamatan',
@@ -97,6 +119,7 @@ class ShippingAddressView extends GetView<ShippingAddressController> {
                 ],
               ),
               SizedBox(height: 16),
+
               Text(
                 'Kelurahan',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -227,7 +250,7 @@ class ShippingAddressView extends GetView<ShippingAddressController> {
                         MaterialStateProperty.all(kPrimaryLightColor)),
                 onPressed: () {
                   controller.setaddress();
-                  Get.toNamed(Routes.PAYMENT);
+                  Get.toNamed(Routes.PAYMENT, arguments: controller.addplusnum);
                   // Handle button press
                 },
                 child: Text(

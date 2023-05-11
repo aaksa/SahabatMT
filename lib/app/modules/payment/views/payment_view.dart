@@ -55,7 +55,17 @@ class _PaymentViewState extends State<PaymentView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      paymentController.payProduk(paymentController.orderanbosku).then((_) {
+      paymentController
+          .payProduk(
+              paymentController.cartItemsList.value,
+              paymentController.totalPrice.toString(),
+              paymentController.myDress.nama,
+              paymentController.myDress.email,
+              paymentController.myDress.number,
+              paymentController.myDress.adress,
+              paymentController.myDress.city,
+              paymentController.myDress.ongkir)
+          .then((_) {
         Navigator.push(
           context,
           MaterialPageRoute(

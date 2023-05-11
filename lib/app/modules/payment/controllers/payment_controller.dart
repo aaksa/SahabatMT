@@ -9,6 +9,7 @@ import 'package:sahabatmt/app/modules/shipping_address/controllers/shipping_addr
 
 import '../../../constants/constants.dart';
 import 'package:sahabatmt/app/data/models/order.dart';
+import '../../../data/models/cart.dart';
 import '../../cart/controllers/cart_controller.dart';
 
 class PaymentController extends GetxController {
@@ -18,24 +19,35 @@ class PaymentController extends GetxController {
   final count = 0.obs;
   // final myOrder = Get.arguments as Order;
   // late final Order myOrder;
+  final myDress = Get.arguments as Addresum;
   Rx<Order> _order = Order().obs;
+  var cartItemsList = RxList<Cart>([]).obs;
+
+  final _storage = GetStorage();
 
   // orderan
-  void addToItems() {
-    var cartController = Get.find<CartController>();
-    var orderan = cartController.orderan;
-    _order.value = orderan;
-  }
+  // void addToItems() {
+  //   var cartController = Get.find<CartController>();
+  //   var orderan = cartController.orderan;
+  //   _order.value = orderan;
+  // }
 
   Order get orderanbosku => _order.value;
 
   void addmoreinfo() {
-    var cartController = Get.find<ShippingAddressController>();
-    String add = cartController.shipadres;
-    String nomor_hp = cartController.nomor;
+    // var cartController = Get.find<ShippingAddressController>();
+    // String add = cartController.shipadres;
+    // String nomor_hp = cartController.nomor;
 
-    _order.value.address = add;
-    _order.value.phone = nomor_hp;
+    _order.value.address = 'myDress.adress';
+    _order.value.phone = ' myDress.number';
+    _order.value.nama = 'aksa';
+    _order.value.address = 'asdfasdf';
+    _order.value.email = 'aa@gmail.com';
+    _order.value.phone = '0000';
+    _order.value.grossAmount = '3000';
+    _order.value.namaBarang = 'sabu';
+    _order.value.kuantitas = '10';
   }
 
   final http.Client _client = http.Client();
@@ -45,39 +57,87 @@ class PaymentController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  Future<void> payProduk(Order order) async {
+  // Future<void> payProduk() async {
+  //   String _token = loginState.read('token');
+  //   isLoading.value = true;
+  //   var response = await _client.post(
+  //     Uri.parse(baseUrl3),
+  //     headers: {
+  //       'Authorization': 'Bearer $_token',
+  //     },
+  //     body: {
+  //       'nama': 'anu baru 2',
+  //       'email': 'order@gmail.com',
+  //       'phone': '082192',
+  //       'address': 'order.address',
+  //       'gross_amount': '1000',
+  //       'nama_barang': 'order.namaBarang',
+  //       'kuantitas': '3',
+  //       'harga': '2',
+  //       'items': jsonEncode(cartItemsList.value)
+  //     },
+  //   );
+  //   print(json.decode(response.body));
+  //   var body = json.decode(response.body);
+  //   print('HAHAHAA');
+  //   print(body);
+  //
+  //   // Call the payProduk API endpoint to get the snapToken
+  //   // and update the snapToken variable with the response
+  //   // from the API endpoint.
+  //   // You can use the http package or any other package
+  //   // to make the API call.
+  //   // Once you receive the snapToken, set the isLoading
+  //   // variable to false to stop the loader.
+  //   snapToken.value = body['snap_token'];
+  //   snapUrl.value = body['redirect_url'];
+  //   isLoading.value = false;
+  //   print(body);
+  //   return body;
+  // }
+
+  Future payProduk(
+    List items,
+    String grossAmount,
+    String name,
+    String email,
+    String phone,
+    String address,
+    String city,
+    String ongkir,
+  ) async {
     String _token = loginState.read('token');
     isLoading.value = true;
-    var response = await _client.post(
-      Uri.parse(baseUrl3),
+
+    var url = Uri.parse(baseUrl3);
+    var response = await http.post(
+      url,
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer $_token',
       },
-      body: {
-        'nama': order.nama,
-        'email': order.email,
-        'phone': order.phone,
-        'address': order.address,
-        'gross_amount': order.grossAmount,
-        'nama_barang': order.namaBarang,
-        'kuantitas': order.kuantitas,
-        'harga': order.harga
-      },
+      body: jsonEncode({
+        'items': items,
+        'gross_amount': grossAmount,
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'address': address,
+        'city': city,
+        'ongkir': ongkir,
+      }),
     );
     var body = json.decode(response.body);
-
-    // Call the payProduk API endpoint to get the snapToken
-    // and update the snapToken variable with the response
-    // from the API endpoint.
-    // You can use the http package or any other package
-    // to make the API call.
-    // Once you receive the snapToken, set the isLoading
-    // variable to false to stop the loader.
-    snapToken.value = body['snap_token'];
-    snapUrl.value = body['redirect_url'];
-    isLoading.value = false;
-    print(body);
-    return body;
+    if (response.statusCode == 200) {
+      snapToken.value = body['snap_token'];
+      snapUrl.value = body['redirect_url'];
+      isLoading.value = false;
+      print(body);
+      return body;
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to pay for products.');
+    }
   }
 
   // Future<String> payProdukAndGetSnapToken() async {
@@ -85,7 +145,7 @@ class PaymentController extends GetxController {
   //   var snapToken = body['snap_token'];
   //   return snapToken;
   // }
-  //
+
   // Future<String> payProdukAndRedirect() async {
   //   var body = await payProduk();
   //   var redirectUrl = ;
@@ -110,7 +170,8 @@ class PaymentController extends GetxController {
 
   @override
   void onInit() {
-    addToItems();
+    // addToItems();
+    _loadCartItemsFromStorage();
     addmoreinfo();
     initSDK();
     super.onInit();
@@ -118,6 +179,7 @@ class PaymentController extends GetxController {
 
   @override
   void onReady() {
+    addmoreinfo();
     super.onReady();
   }
 
@@ -127,4 +189,30 @@ class PaymentController extends GetxController {
   }
 
   void increment() => count.value++;
+
+  void _loadCartItemsFromStorage() {
+    final List<dynamic>? cartData = _storage.read('cartItems');
+    if (cartData != null) {
+      final cartItems = cartData.map((item) => Cart.fromJson(item)).toList();
+      cartItemsList.value = RxList<Cart>.from(cartItems);
+    }
+  }
+
+  int getTotalItemCount() {
+    int totalCount = 0;
+    for (var cartItem in cartItemsList.value) {
+      totalCount += cartItem.quantity ?? 0;
+    }
+    // totalItem.value = totalCount;
+    return totalCount;
+  }
+
+  double get totalPrice {
+    double total = 0.0;
+    for (var item in cartItemsList.value) {
+      total += item.getTotalPrice();
+    }
+    total + 100000;
+    return total;
+  }
 }

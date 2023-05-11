@@ -37,8 +37,8 @@ class SignupView extends GetView<SignupController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                          width: 70,
-                          child: Image.asset("assets/images/logo_splash.png")),
+                          width: getProperWidht(100),
+                          child: Image.asset("assets/icons/logosmt.jpg")),
                     ],
                   ),
                 ),
@@ -60,7 +60,7 @@ class SignupView extends GetView<SignupController> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
-                          "Hi, Please fill the information to complete the log in ",
+                          "Hi, Isi Informasi Anda Untuk Menyelesaikan Registrasi ",
                           style: TextStyle(
                               fontFamily: 'Sans',
                               fontWeight: FontWeight.normal,
@@ -173,10 +173,6 @@ class SignupView extends GetView<SignupController> {
                                           DropdownMenuItem(
                                             value: 'Sulawesi Selatan',
                                             child: Text('Sulawesi Selatan'),
-                                          ),
-                                          DropdownMenuItem(
-                                            value: 'Sulawesi',
-                                            child: Text('Sulawesi'),
                                           ),
                                         ],
                                         decoration: InputDecoration(

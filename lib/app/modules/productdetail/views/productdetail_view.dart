@@ -5,7 +5,7 @@ import 'package:sahabatmt/app/configs/configs.dart';
 import 'package:sahabatmt/app/constants/constants.dart';
 import 'package:sahabatmt/app/modules/widgets/appbarviews.dart';
 
-import '../../../data/models/produk.dart';
+import 'package:sahabatmt/app/data/models/produk.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../../widgets/slider.dart';
 import '../controllers/productdetail_controller.dart';
@@ -26,10 +26,11 @@ class ProductdetailView extends GetView<ProductdetailController> {
     String province = '';
 
     if (myProduct.kondisi == 'baru' || myProduct.kondisi == 'bekas') {
-      condition = myProduct.kondisi!;
-      quantity = myProduct.kuantitas!;
-      address = myProduct.alamat!;
-      province = myProduct.provinsi!;
+      condition = myProduct.kondisi ?? '';
+      // quantity = myProduct.kuantitas ?? 0;
+      quantity = 1;
+      address = myProduct.alamat ?? '';
+      province = myProduct.provinsi ?? '';
       kon = true;
     }
 
@@ -103,29 +104,31 @@ class Product extends StatelessWidget {
                   margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.56,
                   ),
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment.topLeft,
                   child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                      child: SafeArea(
-                        bottom: true,
-                        top: false,
+                      padding: EdgeInsets.fromLTRB(18, 30, 18, 0),
+                      child: SingleChildScrollView(
+                        // add this line
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(title,
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w500)),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(title,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w500)),
+                                  ),
                                 ),
                               ],
+                            ),
+                            SizedBox(
+                              height: getProperHeight(10),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,6 +164,9 @@ class Product extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            SizedBox(
+                              height: getProperHeight(10),
+                            ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -174,8 +180,25 @@ class Product extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Text(deskripsi,
-                                style: TextStyle(color: kPrimaryTextColor)),
+                            SizedBox(
+                              height: getProperHeight(5),
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(deskripsi,
+                                        style: TextStyle(
+                                            color: kPrimaryTextColor)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: getProperHeight(10),
+                            ),
                             Container(
                               width: MediaQuery.of(context).size.width,
                               child: Padding(
@@ -183,7 +206,7 @@ class Product extends StatelessWidget {
                                     vertical: 12, horizontal: 16.0),
                                 child: ElevatedButton(
                                     onPressed: () {
-                                      cartController.addToCart(produk);
+                                      cartController.addToCart(produk, 1);
                                     },
                                     style: ButtonStyle(
                                         backgroundColor:

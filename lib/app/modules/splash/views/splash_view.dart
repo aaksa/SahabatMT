@@ -8,15 +8,14 @@ import '../controllers/splash_controller.dart';
 
 class SplashView extends GetView<SplashController> {
   const SplashView({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: kBackgroundColor1,
       body: SafeArea(
         child: Column(
-
           children: [
             SizedBox(height: 200),
             Column(
@@ -27,11 +26,14 @@ class SplashView extends GetView<SplashController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset('assets/images/logo_splash.png'),
+                      Image.asset(
+                        'assets/icons/logosmt.jpg',
+                        width: 150,
+                        height: 150,
+                      ),
                       SizedBox(
                         height: getProperHeight(70),
                       ),
-
                       CircularProgressIndicator(
                         color: kPrimaryColor,
                       ),
@@ -46,9 +48,15 @@ class SplashView extends GetView<SplashController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("CV Sahabat Multi Teknik" , style: TextStyle(fontFamily: GoogleFonts.roboto().fontFamily, fontSize: 14 ),),
+                  Text(
+                    "CV Sahabat Multi Teknik",
+                    style: TextStyle(
+                        fontFamily: GoogleFonts.roboto().fontFamily,
+                        fontSize: 14),
+                  ),
                 ],
-              ),),
+              ),
+            ),
           ],
         ),
       ),

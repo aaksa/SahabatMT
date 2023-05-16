@@ -24,26 +24,45 @@ class WishlistView extends GetView<WishlistController> {
         ),
         centerTitle: true,
       ),
-      body: RefreshIndicator(
-        onRefresh: () {
-          return Future(() async {
-            controller.fetchRekuests();
-          });
-        },
-        child: Obx(
-          () => SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Column(
-                children: [
-                  for (var rekuest in controller.rekuestList)
-                    CardHorizontal2(rekuest: rekuest),
-                ],
+      body: Obx(
+        () => controller.rekuestList.isEmpty
+            ? const Center(
+                child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                child: Column(
+                  children: [
+                    Image(
+                      image: AssetImage('assets/icons/business1.png'),
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Text('Anda Belum Menawarkan AC Sama Sekali')
+                  ],
+                ),
+              ))
+            : RefreshIndicator(
+                onRefresh: () {
+                  return Future(() async {
+                    controller.fetchRekuests();
+                  });
+                },
+                child: Obx(
+                  () => SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      child: Column(
+                        children: [
+                          for (var rekuest in controller.rekuestList)
+                            CardHorizontal2(rekuest: rekuest),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
       ),
       bottomNavigationBar: BottomNavBarView(),
     );

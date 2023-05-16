@@ -18,6 +18,13 @@ class ShippingAddressView extends GetView<ShippingAddressController> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: kPrimaryTextColor),
         backgroundColor: kBackgroundColor1,
+        leading: IconButton(
+          onPressed: () {
+            Get.toNamed(Routes.CART);
+            // your custom back button action here
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         title: appbarviews(
           title: "Shipping Address",
         ),
@@ -250,7 +257,6 @@ class ShippingAddressView extends GetView<ShippingAddressController> {
                         MaterialStateProperty.all(kPrimaryLightColor)),
                 onPressed: () {
                   controller.setaddress();
-                  Get.toNamed(Routes.PAYMENT, arguments: controller.addplusnum);
                   // Handle button press
                 },
                 child: Text(

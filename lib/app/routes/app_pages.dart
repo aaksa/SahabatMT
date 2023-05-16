@@ -30,6 +30,8 @@ import '../modules/productdetail/bindings/productdetail_binding.dart';
 import '../modules/productdetail/views/productdetail_view.dart';
 import '../modules/resetPassword/bindings/reset_password_binding.dart';
 import '../modules/resetPassword/views/reset_password_view.dart';
+import '../modules/riwayat_transaksi/bindings/riwayat_transaksi_binding.dart';
+import '../modules/riwayat_transaksi/views/riwayat_transaksi_view.dart';
 import '../modules/shipping_address/bindings/shipping_address_binding.dart';
 import '../modules/shipping_address/views/shipping_address_view.dart';
 import '../modules/signup/bindings/signup_binding.dart';
@@ -148,6 +150,11 @@ class AppPages {
       name: _Paths.RESET_PASSWORD,
       page: () => ResetPasswordView(),
       binding: ResetPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIWAYAT_TRANSAKSI,
+      page: () => const RiwayatTransaksiView(),
+      binding: RiwayatTransaksiBinding(),
     ),
   ];
 }

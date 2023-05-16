@@ -51,7 +51,7 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
                   ? kPrimaryColor
                   : Color(0xFF808191),
             ),
-            label: 'Request',
+            label: 'Transaksi',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(

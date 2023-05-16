@@ -59,7 +59,7 @@ class CardMedium extends StatelessWidget {
                                     style: TextStyle(
                                         color: kPrimaryTextColor,
                                         fontSize: 12)),
-                                Text("Rp.${price}",
+                                Text(price,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     textAlign: TextAlign.start,

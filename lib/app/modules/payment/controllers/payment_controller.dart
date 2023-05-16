@@ -171,7 +171,7 @@ class PaymentController extends GetxController {
   @override
   void onInit() {
     // addToItems();
-    _loadCartItemsFromStorage();
+    loadCartItemsFromStorage();
     addmoreinfo();
     initSDK();
     super.onInit();
@@ -179,6 +179,7 @@ class PaymentController extends GetxController {
 
   @override
   void onReady() {
+    loadCartItemsFromStorage();
     addmoreinfo();
     super.onReady();
   }
@@ -190,7 +191,7 @@ class PaymentController extends GetxController {
 
   void increment() => count.value++;
 
-  void _loadCartItemsFromStorage() {
+  void loadCartItemsFromStorage() {
     final List<dynamic>? cartData = _storage.read('cartItems');
     if (cartData != null) {
       final cartItems = cartData.map((item) => Cart.fromJson(item)).toList();

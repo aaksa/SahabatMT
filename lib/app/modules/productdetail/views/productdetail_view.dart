@@ -17,7 +17,8 @@ class ProductdetailView extends GetView<ProductdetailController> {
     final myProduct = Get.arguments as Produk;
     final String image = myProduct.gambar!;
     final String itemName = myProduct.nama!;
-    final String harga = myProduct.harga.toString();
+    final String harga =
+        formatPrice(myProduct.harga?.toDouble() ?? 0).toString();
     final String deskripsi = myProduct.deskripsi!;
     var kon = false;
     String condition = '';
@@ -142,7 +143,7 @@ class Product extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text("Harga: Rp.${harga}",
+                                          Text("Harga: ${harga}",
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.w500)),

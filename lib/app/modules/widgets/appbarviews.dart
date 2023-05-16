@@ -35,10 +35,10 @@ class appbarviews extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () {
-                Get.toNamed(Routes.NOTIFICATION);
+                Get.toNamed(Routes.WISHLIST);
               },
               icon: Icon(
-                Icons.notifications,
+                Icons.local_shipping,
                 color: kPrimaryTextColor,
               ),
             ),

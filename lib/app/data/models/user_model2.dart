@@ -40,7 +40,7 @@ class UserModel2 {
     return {
       'id': int.tryParse(id!),
       'nama': nama,
-      'nomor_hp': int.tryParse(nomorHp!),
+      'nomor_hp': nomorHp,
       'email': email,
       'token': token,
       'Provinsi': provinsi,

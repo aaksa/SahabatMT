@@ -5,6 +5,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../configs/configs.dart';
 import '../modules/widgets/appbarviews.dart';
 // import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 //url endpoint
 // //for api
@@ -16,12 +17,12 @@ import '../modules/widgets/appbarviews.dart';
 // const String baseUrl3 = 'http://34.125.129.117/api/pay';
 
 //for api
-const String baseUrl = 'http://192.168.43.50:8000/api';
+const String baseUrl = 'http://34.125.129.117/api';
 
 //for storage
-const String baseUrl2 = 'http://192.168.43.50:8000';
+const String baseUrl2 = 'http://34.125.129.117';
 
-const String baseUrl3 = 'http://192.168.43.50:8000/api/pay';
+const String baseUrl3 = 'http://34.125.129.117/api/pay';
 
 // For App Color
 const Color kPrimaryColor = Color(0xFFE8505B);
@@ -63,6 +64,15 @@ List<BoxShadow> softShadow = [
     offset: Offset(-2, 2), // changes position of shadow
   )
 ];
+
+String formatPrice(double price) {
+  final formatter = NumberFormat.currency(
+    locale: 'id_ID',
+    decimalDigits: 0,
+    symbol: 'Rp.',
+  );
+  return formatter.format(price);
+}
 
 ButtonStyle butt1 =
     ButtonStyle(backgroundColor: MaterialStatePropertyAll(kPrimaryLightColor));

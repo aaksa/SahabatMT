@@ -23,6 +23,13 @@ class CartView extends GetView<CartController> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: kPrimaryTextColor),
         backgroundColor: kBackgroundColor1,
+        leading: IconButton(
+          onPressed: () {
+            Get.toNamed(Routes.HOME);
+            // your custom back button action here
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         title: appbarviews(
           title: "Shopping Cart",
         ),

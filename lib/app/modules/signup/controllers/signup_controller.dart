@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../services/auth_services.dart';
@@ -16,6 +18,7 @@ class SignupController extends GetxController {
   String? Kelurahan;
   String? Jalan;
   final GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
+  BuildContext? context = Get.context;
 
   late TextEditingController emailController,
       passwordController,
@@ -54,10 +57,24 @@ class SignupController extends GetxController {
         await _authService.register(nama, email, password, nomorHp, provinsi,
             kota, kecamatan, kelurahan, jalan, alamat_lengkap);
         // Get.offAllNamed('/home');
-        Get.offAllNamed('/home');
+
+        QuickAlert.show(
+            context: context!,
+            type: QuickAlertType.success,
+            title: 'Berhasil Membuat Akun',
+            confirmBtnText: 'Login',
+            onConfirmBtnTap: () {
+              Get.offAllNamed(Routes.LOGIN);
+            });
       }
     } catch (e) {
       Get.back();
+      QuickAlert.show(
+        context: context!,
+        type: QuickAlertType.error,
+        title: 'Gagal Melakukan Registrasi',
+        text: e.toString(),
+      ); // That's it to display an alert, use other properties to customize.
       Get.snackbar('Error', e.toString());
     }
   }

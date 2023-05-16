@@ -29,7 +29,9 @@ class LatestlayananView extends GetView<LatestlayananController> {
               return CardHorizontal3(
                   title: latestData[index].nama ?? 'Error',
                   img: latestData[index].gambar ?? 'Error',
-                  harga: latestData[index].harga.toString() ?? "Error",
+                  harga: formatPrice(latestData[index].harga?.toDouble() ?? 0)
+                          .toString() ??
+                      "Error",
                   // kondisi: latestData[index].kondisi ?? "Error",
                   // cta: latestData[index].harga.toString() ?? 'Error',
                   cta: 'Lihat Produk',

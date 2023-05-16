@@ -24,6 +24,7 @@ abstract class Routes {
   static const PAYMENT = _Paths.PAYMENT;
   static const SHIPPING_ADDRESS = _Paths.SHIPPING_ADDRESS;
   static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
+  static const RIWAYAT_TRANSAKSI = _Paths.RIWAYAT_TRANSAKSI;
 }
 
 abstract class _Paths {
@@ -49,4 +50,5 @@ abstract class _Paths {
   static const PAYMENT = '/payment';
   static const SHIPPING_ADDRESS = '/shipping-address';
   static const RESET_PASSWORD = '/reset-password';
+  static const RIWAYAT_TRANSAKSI = '/riwayat-transaksi';
 }

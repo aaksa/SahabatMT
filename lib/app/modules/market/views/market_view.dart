@@ -138,7 +138,9 @@ class MarketView extends GetView<MarketController> {
                                 return CardMedium(
                                   title: data.nama ?? '',
                                   img: data.gambar!,
-                                  price: data.harga?.toString() ?? '',
+                                  price: formatPrice(data.harga!.toDouble())
+                                          .toString() ??
+                                      '',
                                   produk: data,
                                 );
                               },

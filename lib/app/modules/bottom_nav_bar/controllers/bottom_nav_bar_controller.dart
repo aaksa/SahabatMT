@@ -25,7 +25,7 @@ class BottomNavBarController extends GetxController {
         Get.toNamed(Routes.UPLOAD);
         break;
       case 3:
-        Get.toNamed(Routes.WISHLIST);
+        Get.toNamed(Routes.RIWAYAT_TRANSAKSI);
         break;
       case 4:
         Get.toNamed(Routes.ACCOUNT);

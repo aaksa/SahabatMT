@@ -54,6 +54,7 @@ class _PaymentViewState extends State<PaymentView> {
   @override
   void initState() {
     super.initState();
+    paymentController.loadCartItemsFromStorage();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       paymentController
           .payProduk(
@@ -85,7 +86,7 @@ class _PaymentViewState extends State<PaymentView> {
         backgroundColor: kPrimaryLightColor,
         leading: IconButton(
           onPressed: () {
-            Get.toNamed(Routes.HOME);
+            Get.toNamed(Routes.SHIPPING_ADDRESS);
             // your custom back button action here
           },
           icon: Icon(Icons.arrow_back),

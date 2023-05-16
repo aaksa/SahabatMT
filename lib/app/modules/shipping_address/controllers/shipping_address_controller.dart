@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:sahabatmt/app/data/models/produk.dart';
 import 'package:sahabatmt/app/modules/cart/controllers/cart_controller.dart';
 
 import '../../../data/models/cart.dart';
 import '../../../data/models/user_model2.dart';
+import '../../../routes/app_pages.dart';
 
 class ShippingAddressController extends GetxController {
   //TODO: Implement ShippingAddressController
@@ -19,18 +21,15 @@ class ShippingAddressController extends GetxController {
   var selectedKota = 'Makassar'.obs;
   var kotaList = ['Makassar', 'Gowa', 'Maros', 'Barombong'].obs;
 
-  // RxString? kecamatan = ''.obs;
   var kecamatan = TextEditingController().obs;
   var ongkoskirim = TextEditingController().obs;
-
-  // RxString? kelurahan = ''.obs;
   var kelurahan = TextEditingController().obs;
-  // RxString? jalan = ''.obs;
   var jalan = TextEditingController().obs;
-  // RxString? nomorHandphone = ''.obs;
   var nomorHandphone = TextEditingController().obs;
 
   String address = '';
+
+  BuildContext? context = Get.context;
 
   final _storage = GetStorage();
   var cartItemsList = RxList<Cart>([]).obs;
@@ -43,7 +42,7 @@ class ShippingAddressController extends GetxController {
     String prov = selectedProvince.value;
     String kot = selectedKota.value;
     String kec = kecamatan.value.text;
-    address = '$jalanan $kelur $kec, $prov, ';
+    address = '$jalanan $kelur $kec,$kot, $prov, ';
 
     addplusnum.adress = address;
     addplusnum.number = nomorHandphone.value.text;
@@ -51,6 +50,26 @@ class ShippingAddressController extends GetxController {
     addplusnum.email = userData.value.email ?? '';
     addplusnum.nama = userData.value.nama ?? '';
     addplusnum.ongkir = ongkoskirim.value.text ?? '0';
+
+    getnextpage();
+  }
+
+  void getnextpage() {
+    if (kecamatan.value.text.isEmpty ||
+        ongkoskirim.value.text.isEmpty ||
+        kelurahan.value.text.isEmpty ||
+        jalan.value.text.isEmpty ||
+        nomorHandphone.value.text.isEmpty) {
+      // Show an error message if any of the fields is empty
+      QuickAlert.show(
+        context: context!,
+        type: QuickAlertType.error,
+        title: 'Data Belum Lengkap',
+        text: 'Isi Data Secara Lengkap',
+      );
+    } else {
+      Get.toNamed(Routes.PAYMENT, arguments: addplusnum);
+    }
   }
 
   void onkirdong(String kota) {

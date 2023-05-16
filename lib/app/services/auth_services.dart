@@ -52,7 +52,9 @@ class AuthService {
         return true;
       } else {
         print(response.body);
-        throw Exception('Error saat melakukan login');
+        var message = json.decode(response.body);
+        var info = message['data']['message'];
+        throw Exception('Error saat melakukan login :  $info');
       }
     } catch (e) {
       print(e.toString());

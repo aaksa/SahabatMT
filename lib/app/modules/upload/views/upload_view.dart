@@ -13,6 +13,8 @@ import 'package:sahabatmt/app/constants/constants.dart';
 import 'package:sahabatmt/app/modules/upload/controllers/upload_controller.dart';
 import 'package:sahabatmt/app/modules/widgets/appbarviews.dart';
 
+import '../../../routes/app_pages.dart';
+
 class UploadView extends GetView<UploadController> {
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,13 @@ class UploadView extends GetView<UploadController> {
         iconTheme: IconThemeData(color: kPrimaryTextColor),
         backgroundColor: kBackgroundColor1,
         title: appbarviews(title: "Upload Image"),
+        leading: IconButton(
+          onPressed: () {
+            Get.toNamed(Routes.HOME);
+            // your custom back button action here
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

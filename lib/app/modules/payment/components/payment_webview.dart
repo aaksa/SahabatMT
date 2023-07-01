@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../constants/constants.dart';
@@ -17,11 +18,14 @@ class PaymentWebView extends StatefulWidget {
 
 class _PaymentWebViewState extends State<PaymentWebView> {
   late final PaymentController paymentController;
+  Timer? timer;
 
   @override
   void initState() {
-    super.initState();
     paymentController = Get.find<PaymentController>();
+    paymentController.initSDK();
+    paymentController.startFetching();
+    super.initState();
   }
 
   @override
@@ -31,7 +35,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
         backgroundColor: kPrimaryLightColor,
         leading: IconButton(
           onPressed: () {
-            Get.toNamed(Routes.SHIPPING_ADDRESS);
+            Get.offAllNamed(Routes.SHIPPING_ADDRESS);
             // your custom back button action here
           },
           icon: Icon(Icons.arrow_back),
@@ -47,7 +51,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
                   ..setNavigationDelegate(
                     NavigationDelegate(
                       onProgress: (int progress) {
-// Update loading bar.
+                        // Update loading bar.
                       },
                       onPageStarted: (String url) {},
                       onPageFinished: (String url) {},

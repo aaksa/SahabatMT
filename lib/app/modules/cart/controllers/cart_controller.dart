@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:midtrans_sdk/midtrans_sdk.dart';
 import 'package:http/http.dart' as http;
+import 'package:quickalert/quickalert.dart';
 import 'package:sahabatmt/app/data/models/order.dart';
 
 import '../../../data/models/cart.dart';
@@ -37,9 +38,20 @@ class CartController extends GetxController {
     );
 
     if (existingCartItem != null) {
-      existingCartItem.quantity = existingCartItem.quantity! + quantity;
+      QuickAlert.show(
+        context: Get.context!,
+        type: QuickAlertType.confirm,
+        title: 'Barang Sudah Ada',
+        text: 'Silahkan Melakukan Checkout Terlebih Dahulu',
+      );
     } else {
       // create new cart item if none exists
+      QuickAlert.show(
+        context: Get.context!,
+        type: QuickAlertType.success,
+        title: 'Barang Telah Ditambahkan',
+        text: 'Silahkan Melakukan Checkout Pada Keranjang Anda',
+      );
       cartItems.add(cartItem);
     }
 

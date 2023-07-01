@@ -158,6 +158,12 @@ class Product extends StatelessWidget {
                                           SizedBox(
                                             height: 3,
                                           ),
+                                          kon
+                                              ? Text(
+                                                  "Stok : ${produk.kuantitas}",
+                                                  style: TextStyle(
+                                                      color: Colors.black))
+                                              : SizedBox.shrink(),
                                         ],
                                       ),
                                     ),

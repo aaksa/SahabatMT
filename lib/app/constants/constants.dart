@@ -17,12 +17,13 @@ import 'package:intl/intl.dart';
 // const String baseUrl3 = 'http://34.125.129.117/api/pay';
 
 //for api
-const String baseUrl = 'http://34.125.129.117/api';
+const String baseUrl = 'http://34.125.45.211/api';
 
 //for storage
-const String baseUrl2 = 'http://34.125.129.117';
+const String baseUrl2 = 'http://34.125.45.211';
 
-const String baseUrl3 = 'http://34.125.129.117/api/pay';
+const String baseUrl3 = 'http://34.125.45.211/api/pay';
+const String baseUrl4 = 'http://34.125.45.211/api/transaksi';
 
 // For App Color
 const Color kPrimaryColor = Color(0xFFE8505B);

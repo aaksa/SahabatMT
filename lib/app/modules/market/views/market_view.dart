@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sahabatmt/app/constants/constants.dart';
 import 'package:sahabatmt/app/modules/bottom_nav_bar/views/bottom_nav_bar_view.dart';
+import 'package:sahabatmt/app/modules/market/components/search_bar.dart';
 import 'package:sahabatmt/app/modules/widgets/card-small.dart';
 import 'package:sahabatmt/app/modules/widgets/cart_medium.dart';
 
@@ -92,6 +93,10 @@ class MarketView extends GetView<MarketController> {
                             ),
                             child: Text('Jasa'),
                           ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(child: SearchBarCustom()),
                         ],
                       )),
                 ),

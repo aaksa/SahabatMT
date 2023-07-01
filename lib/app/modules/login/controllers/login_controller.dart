@@ -48,6 +48,8 @@ class LoginController extends GetxController {
         );
         var email = emailController.text;
         var password = passwordController.text;
+        print(email);
+        print(password);
         await _authService.login(email, password);
         QuickAlert.show(
             context: context!,

@@ -3,16 +3,19 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:quantity_input/quantity_input.dart';
 import 'package:sahabatmt/app/constants/constants.dart';
+import 'package:sahabatmt/app/data/models/produk.dart';
 
 class CardShopping extends StatelessWidget {
   final String? body;
   final bool? stock;
   final String? price;
   final String? img;
+  final Produk? produk;
   final int? kuantitas;
   final Function() deleteOnPress;
   final Function(int) update;
-  final RxList<int> list;
+  // final List<int> list;
+
   final int selectedValue;
   CardShopping({
     this.body = "Placeholder Title",
@@ -22,13 +25,17 @@ class CardShopping extends StatelessWidget {
     required this.deleteOnPress,
     required this.kuantitas,
     required this.update,
-    required this.list,
     required this.selectedValue,
+    this.produk,
   });
 
   @override
   Widget build(BuildContext context) {
     int quantity = 0;
+    // final List<int> list ;
+    List<int> list =
+        List.generate(produk?.kuantitas ?? 9, (index) => index + 1);
+
     return Stack(children: [
       Container(
         height: 135,
@@ -221,7 +228,7 @@ class CardShopping extends StatelessWidget {
 // }
 class Dropdown extends StatelessWidget {
   final Function(int) kuantitass;
-  final RxList<int> list;
+  final List<int> list;
   int selectedValues;
   Dropdown(
       {Key? key,
@@ -234,56 +241,54 @@ class Dropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Container(
-        height: 14.0,
-        child: DropdownButtonHideUnderline(
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              canvasColor: kPrimaryLightColor,
-            ),
-            child: DropdownButton<int>(
-              value: selectedValues,
-              icon: Padding(
-                padding: const EdgeInsets.only(left: 25.0, bottom: 5),
-                child: Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.black,
-                ),
+    return Container(
+      height: 14.0,
+      child: DropdownButtonHideUnderline(
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: kPrimaryLightColor,
+          ),
+          child: DropdownButton<int>(
+            value: selectedValues,
+            icon: Padding(
+              padding: const EdgeInsets.only(left: 25.0, bottom: 5),
+              child: Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.black,
               ),
-              iconSize: 20,
-              elevation: 1,
-              style: TextStyle(color: Colors.white),
-              onChanged: (int? newValue) {
-                selectedValues = newValue!;
-                kuantitass(newValue);
-              },
-              items: list
-                  .map((value) => DropdownMenuItem<int>(
-                        value: value,
-                        child: Text(value.toString(),
-                            style: TextStyle(
-                                color: kBackgroundColor1,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12.0)),
-                      ))
-                  .toList(),
-
-              // DropdownButtonFormField(
-              //   value: controller.selectedKota.value,
-              //   items: controller.kotaList
-              //       .map((province) => DropdownMenuItem(
-              //     value: province,
-              //     child: Text(province),
-              //   ))
-              //       .toList(),
-              //   onChanged: (selectedValue) =>
-              //   controller.selectedKota.value = selectedValue!,
-              //   decoration: InputDecoration(
-              //     hintText: 'Select province',
-              //   ),
-              // )
             ),
+            iconSize: 15,
+            elevation: 1,
+            style: TextStyle(color: Colors.white),
+            onChanged: (int? newValue) {
+              selectedValues = newValue!;
+              kuantitass(newValue);
+            },
+            items: list
+                .map((value) => DropdownMenuItem<int>(
+                      value: value,
+                      child: Text(value.toString(),
+                          style: TextStyle(
+                              color: kBackgroundColor1,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.0)),
+                    ))
+                .toList(),
+
+            // DropdownButtonFormField(
+            //   value: controller.selectedKota.value,
+            //   items: controller.kotaList
+            //       .map((province) => DropdownMenuItem(
+            //     value: province,
+            //     child: Text(province),
+            //   ))
+            //       .toList(),
+            //   onChanged: (selectedValue) =>
+            //   controller.selectedKota.value = selectedValue!,
+            //   decoration: InputDecoration(
+            //     hintText: 'Select province',
+            //   ),
+            // )
           ),
         ),
       ),

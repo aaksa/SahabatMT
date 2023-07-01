@@ -7,6 +7,8 @@ class MarketController extends GetxController {
   //TODO: Implement MarketController
 
   final count = 0.obs;
+  RxString searchQuery = ''.obs;
+
   // var produkList = <Produk>[].obs;
 
   // var isProduk = true.obs;
@@ -21,6 +23,25 @@ class MarketController extends GetxController {
     fetchData();
     isButton1Active.value = true;
     super.onInit();
+  }
+
+  void setSearchQuery(String query) {
+    searchQuery.value = query;
+  }
+
+  Future<void> fetchDataForSearch() async {
+    try {
+      // Get the search query value
+      String query = searchQuery.value;
+
+      // Make a search request using the search query
+      List<Produk> searchData = await _services.fetchDataSearch2(query);
+      // Update the marketData with the search results
+      marketData.value = searchData;
+    } catch (e) {
+      print(e.toString());
+      // Handle the error
+    }
   }
 
   void fetchData() async {

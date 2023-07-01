@@ -65,17 +65,3 @@ class Produk {
   }
 }
 
-// "data": [
-// {
-// "id": 21,
-// "nama": "corporis",
-// "gambar": "images/produk/202304110641-placeholder.png",
-// "harga": 372286,
-// "deskripsi": "Eos eos porro quasi dolor id deserunt.",
-// "kondisi": "bekas",
-// "alamat": "2943 Lizeth Gardens\nStiedemannland, ID 75585-5450",
-// "kuantitas": 69,
-// "provinsi": "Alabama",
-// "created_at": "2023-04-11T06:44:05.000000Z",
-// "updated_at": "2023-04-11T06:44:05.000000Z"
-// },

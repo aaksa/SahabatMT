@@ -68,7 +68,6 @@ class HomeController extends GetxController {
       var data = await _services.fetchData();
       produkList.value = data;
       // print(produkList[0].gambar);
-
     } catch (e) {
       print(e.toString());
     } finally {

@@ -107,14 +107,15 @@ class CartView extends GetView<CartController> {
                                         deleteOnPress: () {
                                           controller.removeFromCart(item);
                                         },
-                                        kuantitas: item.quantity ?? 1,
+                                        kuantitas: item.quantity ?? 9,
                                         update: (value) {
                                           controller.updateCartItemQuantity(
                                               item, value);
                                         },
-                                        list: controller.dropdownValues,
                                         selectedValue: cartItemsList
-                                            .value[index].quantity!,
+                                                .value[index].quantity! ??
+                                            9,
+                                        produk: item.produk,
                                       ),
                                     );
                                   },
